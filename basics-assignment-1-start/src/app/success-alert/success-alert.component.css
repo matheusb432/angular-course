@@ -1,0 +1,11 @@
+p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  width: 25%;
+  font-size: 28px;
+  color: green;
+  font-weight: bold;
+  border: 1px solid lightgreen;
+}
