@@ -1,1 +1,28 @@
+<label for="">Server Name</label>
+
+<label for="inputServerName">Event binding, Approach with (input) event</label>
+<input
+  type="text"
+  class="form-control"
+  id="inputServerName"
+  (input)="onUpdateServerName($event)"
+/>
+<p>serverName is -> {{ serverName }}</p>
+<label for="inputServerNameModel"
+  >Two-way data binding, Approach with [(ngModel)] directive</label
+>
+<input
+  type="text"
+  class="form-control"
+  id="inputServerNameModel"
+  [(ngModel)]="serverNameWithNgModel"
+/>
+<p>serverNameWithNgModel is -> {{ serverNameWithNgModel }}</p>
+<button
+  class="btn btn-primary"
+  [disabled]="!allowNewServer"
+  [innerText]="addServerText"
+  (click)="onCreateServer()"
+></button>
+<p>{{ serverCreationStatus }}</p>
 <app-server></app-server> <app-server></app-server>
