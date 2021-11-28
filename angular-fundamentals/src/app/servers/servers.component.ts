@@ -15,6 +15,8 @@ export class ServersComponent implements OnInit {
   serverCreationStatus = 'No server was created';
   serverName = '';
   serverNameWithNgModel = '';
+  serverCreated = false;
+  servers = ['Test Server', 'Test Server 2'];
 
   addServerText = 'Add Server Element Binding';
 
@@ -27,7 +29,10 @@ export class ServersComponent implements OnInit {
   ngOnInit(): void {}
 
   onCreateServer() {
-    this.serverCreationStatus = 'Server was created';
+    this.serverCreationStatus = `Server was created, server is ${this.serverName}`;
+    this.servers.push(this.serverName);
+    this.serverName = '';
+    this.serverCreated = true;
   }
 
   onHover() {
