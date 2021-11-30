@@ -1,1 +1,35 @@
-<p>recipe-item works!</p>
+<div class="grid grid-cols-12 mt-4 mx-4">
+  <a
+    class="
+      col-span-full
+      border-2 border-pink-500
+      py-2
+      px-3
+      grid grid-cols-12
+      transition-all
+      hover:bg-pink-200
+      border-opacity-50
+      rounded-md
+    "
+    href="#"
+  >
+    <div
+      class="col-span-full lg:col-span-6 xl:col-span-4 xl:col-start-1 text-left"
+    >
+      <h2 class="text-2xl font-bold">{{ recipe.name }}</h2>
+      <p>{{ recipe.description }}</p>
+    </div>
+    <img
+      class="
+        col-span-full
+        lg:col-span-6 lg:col-start-10
+        xl:col-span-3 xl:col-start-11
+        rounded-full
+        max-h-16
+        w-20
+      "
+      [src]="recipe.imagePath"
+      alt="Recipe Image"
+    />
+  </a>
+</div>

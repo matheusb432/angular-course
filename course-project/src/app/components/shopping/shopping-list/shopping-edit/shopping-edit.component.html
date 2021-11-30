@@ -1,3 +1,21 @@
-<p>
-  shopping-edit works!
-</p>
+<div class="grid grid-cols-12">
+  <div class="col-span-full">
+    <form>
+      <div class="grid grid-cols-12">
+        <div class="sm:col-span-5 form-input">
+          <label for="inputName">Name</label>
+          <input type="text" id="inputName" />
+        </div>
+        <div class="sm:col-span-2 form-input">
+          <label for="inputNumber">Amount</label>
+          <input type="number" name="inputNumber" id="inputNumber" />
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button class="btn-pink" type="submit">Add</button>
+        <button class="btn-red" type="button">Delete</button>
+        <button class="btn" type="button">Clear</button>
+      </div>
+    </form>
+  </div>
+</div>
