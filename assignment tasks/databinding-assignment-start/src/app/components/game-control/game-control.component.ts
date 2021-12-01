@@ -1,21 +1,15 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Output } from "@angular/core";
 
 @Component({
   selector: "app-game-control",
   templateUrl: "./game-control.component.html",
   styleUrls: ["./game-control.component.css"],
 })
-export class GameControlComponent implements OnInit {
-  // odds: number[] = [];
-  // evens: number[] = [];
-  gameControl: NodeJS.Timeout;
+export class GameControlComponent {
+  gameControl: any;
 
   @Output() newNumber: EventEmitter<number> = new EventEmitter();
   incrementingNumber = 0;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   startGame() {
     this.gameControl = setInterval(() => {
@@ -32,6 +26,4 @@ export class GameControlComponent implements OnInit {
 
   getRandInt = (min = 0, max = 1000) =>
     Math.floor((min + max) * Math.random() + min);
-
-  // isEven = (n: number) => n % 2 === 0;
 }
