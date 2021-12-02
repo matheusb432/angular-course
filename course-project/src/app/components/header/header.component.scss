@@ -1,3 +1,7 @@
-li {
-  @apply whitespace-nowrap;
+// li {
+//   @apply whitespace-nowrap;
+// }
+
+.navbar-item {
+  @apply whitespace-nowrap transition-all text-xl hover:text-pink-700;
 }
