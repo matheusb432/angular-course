@@ -83,12 +83,13 @@ h1 {
   @apply relative inline-block text-left;
 }
 
-.dropdown .dropdown-menu {
-  display: none;
-  opacity: 0;
-  transition: all 0.15s ease-in;
-}
-.dropdown:focus-within .dropdown-menu {
-  display: block;
-  opacity: 1;
-}
+// .dropdown .dropdown-menu {
+//   display: none;
+//   opacity: 0;
+//   transition: all 0.15s ease-in;
+// }
+
+// .dropdown:focus-within .dropdown-menu {
+//   display: block;
+//   opacity: 1;
+// }

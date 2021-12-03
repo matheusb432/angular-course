@@ -3,5 +3,11 @@
 // }
 
 .navbar-item {
-  @apply whitespace-nowrap transition-all text-xl hover:text-pink-700;
+  @apply whitespace-nowrap transition-all text-lg hover:text-pink-700;
+}
+
+app-chevron-icon {
+  position: absolute;
+  top: 4px;
+  right: -20px;
 }

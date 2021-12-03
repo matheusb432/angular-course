@@ -45,8 +45,19 @@
       <a href="#" (click)="onSelect('shopping-list')">Shopping List</a>
     </li>
     <li class="flex-grow"></li>
-    <li class="navbar-item">
-      <a href="#">Manage</a>
+    <li class="navbar-item relative right-4 dropdown">
+      <!-- TODO ? applying dropdown directive -->
+      <div class="cursor-pointer" appDropdown [dropdownMenu]="dropdownLinks">
+        Manage
+        <app-chevron-icon styleClass="-ml-1"></app-chevron-icon>
+      </div>
+      <ul class="dropdown-menu" #dropdownLinks>
+        <li class="custom-dropdown-item">
+          <a href="#">link 1</a>
+        </li>
+        <li class="custom-dropdown-item"><a href="#">link 2</a></li>
+        <li class="custom-dropdown-item"><a href="#">link 3</a></li>
+      </ul>
     </li>
   </ul>
 </nav>

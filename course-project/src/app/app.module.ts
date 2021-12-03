@@ -1,3 +1,5 @@
+import { ChevronIconComponent } from './components/custom/chevron-icon/chevron-icon.component';
+import { DropdownDirective } from './shared/dropdown.directive';
 import { ShoppingEditComponent } from './components/shopping/shopping-list/shopping-edit/shopping-edit.component';
 import { ShoppingListComponent } from './components/shopping/shopping-list/shopping-list.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -22,6 +24,8 @@ import { FormsModule } from '@angular/forms';
     RecipeItemComponent,
     ShoppingListComponent,
     ShoppingEditComponent,
+    DropdownDirective,
+    ChevronIconComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-primary" (click)="onlyOdd = !onlyOdd">
+        Only show odd numbers
+      </button>
+      <br /><br />
+      <ul class="list-group">
+        <ng-template [ngIf]="onlyOdd" [ngIfElse]="evenItems">
+          <li
+            *ngFor="let number of oddNumbers"
+            [ngClass]="{ odd: number % 2 !== 0 }"
+            [ngStyle]="{
+              backgroundColor: number % 2 !== 0 ? 'navy' : 'transparent'
+            }"
+            class="list-group-item"
+          >
+            {{ number }}
+          </li>
+        </ng-template>
+        <ng-template #evenItems>
+          <li
+            *ngFor="let number of evenNumbers"
+            [ngClass]="{ even: number % 2 === 0 }"
+            [ngStyle]="{
+              backgroundColor: number % 2 !== 0 ? 'navy' : 'transparent'
+            }"
+            class="list-group-item"
+          >
+            {{ number }}
+          </li>
+        </ng-template>
+      </ul>
+      <!-- TODO ? custom attribute directives -->
+      <p appBasicHighlight>appBasicHighlight directive!</p>
+      <p [appBetterHighlight]="'orangered'" defaultColor="purple">
+        appBetterHighlight directive!
+      </p>
+      <!-- TODO ? custom structural directive -->
+      <p *appUnless="onlyOdd">It is not odd now!</p>
+      <select [(ngModel)]="value">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="100">100</option>
+        <option [value]="999">999</option>
+      </select>
+      <!-- TODO ? ngSwitch directive -->
+      <div [ngSwitch]="value">
+        <p>ngSwitch !</p>
+        <p *ngSwitchCase="5">value is 5</p>
+        <p *ngSwitchCase="10">value is 10</p>
+        <p *ngSwitchCase="100">value is 100</p>
+        <p *ngSwitchDefault>value is default</p>
+      </div>
+    </div>
+  </div>
+</div>
