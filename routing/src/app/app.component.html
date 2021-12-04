@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <ul class="nav nav-tabs">
+        <!-- TODO ? using routerLink allows angular to properly navigate without refreshing the page -->
+        <!-- ? so while href can be used, it would be slower and make the page lose it's state -->
+        <li role="presentation" class="active"><a routerLink="/">Home</a></li>
+        <li role="presentation"><a routerLink="/servers">Servers</a></li>
+        <li role="presentation"><a [routerLink]="['/users']">Users</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <!-- TODO * router-outlet specifies where will a router component render in this page -->
+      <!-- * so for the home page, this will be app-home, for users, app-users, and servers, app-servers -->
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
