@@ -7,11 +7,18 @@ import { UsersService } from './services/users.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  // Providing UsersService so the AppModule instance get's overwritten for this component and it's children
+  // TODO ? Providing UsersService so the AppModule instance get's overwritten for this component and it's children
   providers: [UsersService],
 })
 export class AppComponent {
-  constructor(private counterService: CounterService) {}
+  constructor(
+    private userService: UsersService,
+    private counterService: CounterService
+  ) {}
+
+  get users() {
+    return this.userService.users;
+  }
 
   get count(): number {
     return this.counterService.counter;

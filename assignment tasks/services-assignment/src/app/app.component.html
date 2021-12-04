@@ -4,6 +4,15 @@
       <h3>Count -> {{ count }}</h3>
       <app-active-users></app-active-users>
       <app-inactive-users></app-inactive-users>
+      <!-- TODO ? all users shown here to demonstrate that the state of this object is consistent
+                ? in all components even without using data binding -->
+      <h3>All Users | Count -> {{ count }}</h3>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let user of users; let i = index">
+          {{ user.active ? 'Active' : 'Inactive' }} | {{ user.name }} |
+          {{ user.statusChangeCount }}
+        </li>
+      </ul>
     </div>
   </div>
 </div>

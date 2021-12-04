@@ -1,31 +1,40 @@
 import { UserActions } from '.././model/user-actions.enum';
 import { CounterService } from './counter.service';
 import { Injectable } from '@angular/core';
+import { User } from '../model/user';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
-  activeUsers = ['Max', 'Anna'];
-  inactiveUsers = ['Chris', 'Manu'];
+  users: User[] = [
+    new User(1, 'Max', true),
+    new User(2, 'Anna', true),
+    new User(3, 'Chris', true),
+    new User(4, 'Manu', true),
+  ];
 
   constructor(private counterService: CounterService) {}
 
   onSetToInactive(id: number) {
-    this.inactiveUsers.push(this.activeUsers[id]);
+    const user = this.getUser(id);
 
-    this.activeUsers.splice(id, 1);
+    user.active = false;
 
-    this.onAction(UserActions.SetActive);
+    this.onAction(user, UserActions.SetActive);
   }
 
   onSetToActive(id: number) {
-    this.activeUsers.push(this.inactiveUsers[id]);
+    const user = this.getUser(id);
 
-    this.inactiveUsers.splice(id, 1);
+    user.active = true;
 
-    this.onAction(UserActions.SetInactive);
+    this.onAction(user, UserActions.SetInactive);
   }
 
-  onAction(action: UserActions) {
+  onAction(user: User, action: UserActions) {
+    user.statusChangeCount++;
+
     this.counterService.userAction.emit(action);
   }
+
+  getUser = (id: number) => this.users.find((u) => u.id === id);
 }

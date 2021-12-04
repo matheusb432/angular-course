@@ -9,10 +9,10 @@ export class CounterService {
 
   counterUpdated = new EventEmitter<number>();
 
-  // Essentially a dictionary that can run specific code for different actions, of course
-  // that for a counter this is not very necessary but if there were a handful or
-  // a dozen different actions that needed different handling in this service's event, then
-  // this technique can centralize all handling in one place and be reusable in a more loosely coupled way.
+  // TODO ? Essentially a dictionary that can run specific code for different actions, of course
+  // ? that for a counter this is not very necessary but if there were a handful or
+  // ? a dozen different actions that needed different handling in this service's event, then
+  // ? this technique can centralize all handling in one place and be reusable in a more loosely coupled way.
   counterReducer = {
     [UserActions.SetActive]: () => {
       this.counter += 1;

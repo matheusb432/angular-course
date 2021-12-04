@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { CounterService } from '../services/counter.service';
 import { UsersService } from '../services/users.service';
 
@@ -8,16 +9,17 @@ import { UsersService } from '../services/users.service';
   styleUrls: ['./inactive-users.component.css'],
 })
 export class InactiveUsersComponent implements OnInit {
-  users: string[];
-
   constructor(
     private usersService: UsersService,
     private counterService: CounterService
   ) {}
 
-  ngOnInit() {
-    this.users = this.usersService.inactiveUsers;
+  // ? since users here is just a subset of the users array, it should be a readonly property.
+  get users() {
+    return this.usersService.users.filter((u) => !u.active);
+  }
 
+  ngOnInit() {
     this.counterService.counterUpdated.subscribe((number) => {
       console.log(`in inactive-users, counter = ${number}`);
     });
