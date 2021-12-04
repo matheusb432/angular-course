@@ -1,63 +1,82 @@
-<div class="grid grid-cols-12">
-  <div class="col-span-full">
-    <img
-      [src]="recipe.imagePath"
-      alt="Recipe Image"
-      class="max-h-72 mx-auto my-4"
-    />
+<ng-template [ngIf]="recipe" [ngIfElse]="noRecipe">
+  <div class="grid grid-cols-12 my-2">
+    <div class="col-span-full">
+      <img
+        [src]="recipe.imagePath"
+        alt="Recipe Image"
+        class="max-h-72 mx-auto my-4"
+      />
+    </div>
   </div>
-</div>
-<div class="grid grid-cols-12">
-  <div class="col-span-full">
-    <h1>{{ recipe?.name || "Recipe Name" }}</h1>
+  <div class="grid grid-cols-12 my-2">
+    <div class="col-span-full">
+      <h1>{{ recipe?.name || "Recipe Name" }}</h1>
+    </div>
   </div>
-</div>
-<div class="grid grid-cols-12">
-  <div class="col-span-full">
-    <div class="dropdown">
-      <!-- TODO ? applying dropdown directive here -->
-      <div appDropdown [dropdownMenu]="dropdownMenuRef">
-        <button
-          type="button"
-          class="btn-pink inline-flex"
-          id="menu-button"
-          aria-expanded="true"
-          aria-haspopup="true"
+  <div class="grid grid-cols-12 my-2">
+    <div class="col-span-full">
+      <div class="dropdown">
+        <!-- TODO ? applying dropdown directive here -->
+        <div appDropdown [dropdownMenu]="dropdownMenuRef">
+          <button
+            type="button"
+            class="btn-pink inline-flex"
+            id="menu-button"
+            aria-expanded="true"
+            aria-haspopup="true"
+          >
+            Options
+            <app-chevron-icon></app-chevron-icon>
+          </button>
+        </div>
+        <div
+          class="dropdown-menu"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
+          tabindex="-1"
+          #dropdownMenuRef
         >
-          Options
-          <app-chevron-icon></app-chevron-icon>
-        </button>
+          <ul class="py-1" role="none">
+            <li>
+              <a
+                class="custom-dropdown-item cursor-pointer"
+                (click)="navigateWithIngredients()"
+                >To Shopping List</a
+              >
+            </li>
+            <li>
+              <a href="#" class="custom-dropdown-item">Edit Recipe</a>
+            </li>
+            <li>
+              <a href="#" class="custom-dropdown-item">Delete Recipe</a>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div
-        class="dropdown-menu"
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="menu-button"
-        tabindex="-1"
-        #dropdownMenuRef
-      >
-        <ul class="py-1" role="none">
-          <li>
-            <a href="#" class="custom-dropdown-item">To Shopping List</a>
-          </li>
-          <li>
-            <a href="#" class="custom-dropdown-item">Edit Recipe</a>
-          </li>
-          <li>
-            <a href="#" class="custom-dropdown-item">Delete Recipe</a>
+    </div>
+  </div>
+  <div class="grid grid-cols-12 my-2">
+    <div class="col-span-full">
+      <div>{{ recipe?.description || "Recipe Description" }}</div>
+    </div>
+  </div>
+  <div class="grid grid-cols-12 my-2">
+    <div class="col-span-full">
+      <div>
+        <h3 class="text-xl font-bold">Ingredients</h3>
+        <ul class="space-y-2">
+          <li *ngFor="let ingredient of recipe.ingredients" class="list-item">
+            {{ ingredient.name }} {{ ingredient.amount }}
           </li>
         </ul>
       </div>
     </div>
   </div>
-</div>
-<div class="grid grid-cols-12">
-  <div class="col-span-full">
-    <div>{{ recipe?.description || "Recipe Description" }}</div>
+</ng-template>
+
+<ng-template #noRecipe>
+  <div class="flex items-center justify-center w-full h-full">
+    <p class="text-3xl font-bold">Select a Recipe!</p>
   </div>
-</div>
-<div class="grid grid-cols-12">
-  <div class="col-span-full">
-    <div>Ingredients</div>
-  </div>
-</div>
+</ng-template>

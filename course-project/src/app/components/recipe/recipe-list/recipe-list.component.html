@@ -4,9 +4,9 @@
       <button class="btn-pink">New Recipe</button>
     </div>
   </div>
+
   <app-recipe-item
     *ngFor="let recipe of recipes"
     [recipe]="recipe"
-    (recipeSelected)="onRecipeSelect(recipe)"
   ></app-recipe-item>
 </div>

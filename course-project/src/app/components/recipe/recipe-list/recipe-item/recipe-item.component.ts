@@ -1,4 +1,5 @@
-import { Recipe } from './../recipe.model';
+import { RecipeService } from '../../recipe.service';
+import { Recipe } from '../../recipe.model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
@@ -9,12 +10,16 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class RecipeItemComponent implements OnInit {
   @Input() recipe: Recipe;
 
-  @Output() recipeSelected = new EventEmitter<void>();
-  constructor() {}
+  constructor(private service: RecipeService) {}
 
   ngOnInit(): void {}
 
+  // TODO * by using the RecipeComponent's RecipeService instance, there's no need to create a
+  // TODO * long chain of @Output events to emit this value to the RecipeDetailComponent
+  // *
+  // * before :: recipe-item -> recipe-list -> recipes <-> recipe-detail
+  // * after  :: recipe-item <-> RecipeService <-> recipe-detail
   onRecipeSelect() {
-    this.recipeSelected.emit();
+    this.service.setActiveRecipe(this.recipe);
   }
 }

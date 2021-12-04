@@ -1,9 +1,12 @@
+import { ShoppingService } from '../../shopping.service';
 import {
   Component,
   ElementRef,
   EventEmitter,
+  Host,
   OnInit,
   Output,
+  SkipSelf,
   ViewChild,
 } from '@angular/core';
 import { Ingredient } from 'src/app/shared/ingredient.model';
@@ -19,25 +22,45 @@ export class ShoppingEditComponent implements OnInit {
 
   @Output() ingredientCreated = new EventEmitter<Ingredient>();
 
-  constructor() {}
+  constructor(private service: ShoppingService) {}
 
   ngOnInit() {}
 
-  addIngredient() {
-    const name = this.nameInput.nativeElement.value;
-    const amount = +this.amountInput.nativeElement.value;
+  get name() {
+    return this.nameInput.nativeElement;
+  }
 
-    if (!name || !amount) {
+  // set name(value: string) {
+  //   this.nameInput.nativeElement.value = value;
+  // }
+
+  get amount() {
+    return this.amountInput.nativeElement;
+  }
+
+  // set amount(value: string) {
+  //   this.amountInput.nativeElement.value = value;
+  // }
+
+  addIngredient() {
+    if (!this.name || !this.amount) {
       alert('fill input fields!');
 
       return;
     }
 
-    this.ingredientCreated.emit({ name, amount });
+    this.service.addIngredient({
+      name: this.name.value,
+      amount: +this.amount.value,
+    });
   }
 
   clearFields() {
-    this.nameInput.nativeElement.value = '';
-    this.amountInput.nativeElement.value = '';
+    this.name.value = '';
+    this.amount.value = '';
+  }
+
+  clearIngredients() {
+    this.service.setIngredients([]);
   }
 }

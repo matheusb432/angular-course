@@ -3,7 +3,7 @@ import { UserActions } from '../model/user-actions.enum';
 
 @Injectable({ providedIn: 'root' })
 export class CounterService {
-  counter = 0;
+  private _counter = 0;
 
   userAction = new EventEmitter<UserActions>();
 
@@ -15,10 +15,10 @@ export class CounterService {
   // ? this technique can centralize all handling in one place and be reusable in a more loosely coupled way.
   counterReducer = {
     [UserActions.SetActive]: () => {
-      this.counter += 1;
+      this._counter += 1;
     },
     [UserActions.SetInactive]: () => {
-      this.counter -= 1;
+      this._counter -= 1;
     },
   };
 
@@ -28,6 +28,10 @@ export class CounterService {
 
       this.incrementCounter(action);
     });
+  }
+
+  get counter() {
+    return this._counter;
   }
 
   incrementCounter(action: UserActions) {

@@ -5,7 +5,7 @@ import { User } from '../model/user';
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
-  users: User[] = [
+  private _users: User[] = [
     new User(1, 'Max', true),
     new User(2, 'Anna', true),
     new User(3, 'Chris', true),
@@ -13,6 +13,10 @@ export class UsersService {
   ];
 
   constructor(private counterService: CounterService) {}
+
+  get users() {
+    return this._users.slice();
+  }
 
   onSetToInactive(id: number) {
     const user = this.getUser(id);
@@ -36,5 +40,5 @@ export class UsersService {
     this.counterService.userAction.emit(action);
   }
 
-  getUser = (id: number) => this.users.find((u) => u.id === id);
+  getUser = (id: number) => this._users.find((u) => u.id === id);
 }

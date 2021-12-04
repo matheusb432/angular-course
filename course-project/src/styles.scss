@@ -21,6 +21,7 @@ h1 {
   focus:border-black
   transition-all
   relative
+  whitespace-nowrap
   text-center;
 }
 
@@ -31,11 +32,16 @@ h1 {
 
 .btn-red {
   @extend .btn;
-  @apply bg-red-600 hover:bg-red-500;
+  @apply bg-red-600 hover:bg-red-400;
+}
+
+.btn-orange {
+  @extend .btn;
+  @apply bg-yellow-600 hover:bg-yellow-500;
 }
 
 .list-item {
-  @apply py-2 px-3 border border-pink-700 border-opacity-30;
+  @apply py-2 px-3 border border-pink-700 border-opacity-30 text-left;
 }
 
 .form-input {
@@ -51,7 +57,7 @@ h1 {
 }
 
 .form-buttons {
-  @apply grid grid-cols-12 space-x-4 mt-4 ml-4;
+  @apply grid grid-cols-8 space-x-4 mt-4 ml-4;
 }
 
 .custom-dropdown-item {

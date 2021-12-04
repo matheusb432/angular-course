@@ -1,22 +1,21 @@
+import { ShoppingService } from '../shopping.service';
 import { Ingredient } from './../../../shared/ingredient.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, Host, OnInit, SkipSelf } from '@angular/core';
 
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.scss'],
+  // providers: [ShoppingService],
 })
 export class ShoppingListComponent implements OnInit {
-  ingredients: Ingredient[] = [
-    new Ingredient('Apples', 5),
-    new Ingredient('Pears', 10),
-  ];
-
-  constructor() {}
+  // TODO * @SkipSelf() here gets the ModuleInjector instance of ShoppingService, so it ignores the
+  // * local provided instance, this way it can keep the same state application wide.
+  constructor(@SkipSelf() private serviceRoot: ShoppingService) {}
 
   ngOnInit() {}
 
-  addIngredient(ingredient: Ingredient) {
-    this.ingredients.push(ingredient);
+  get ingredients(): Ingredient[] {
+    return this.serviceRoot.ingredients;
   }
 }

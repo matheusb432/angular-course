@@ -1,4 +1,5 @@
-import { Recipe } from './../recipe-list/recipe.model';
+import { RecipeService } from '../recipe.service';
+import { Recipe } from '../recipe.model';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,15 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./recipe-detail.component.scss'],
 })
 export class RecipeDetailComponent implements OnInit {
-  @Input() recipe: Recipe;
-
-  constructor() {}
+  constructor(private service: RecipeService) {}
 
   ngOnInit(): void {}
+
+  get recipe() {
+    return this.service.activeRecipe;
+  }
+
+  navigateWithIngredients(): void {
+    this.service.goToShoppingList();
+  }
 }
