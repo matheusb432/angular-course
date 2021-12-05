@@ -2,11 +2,21 @@
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <ul class="nav nav-tabs">
-        <!-- TODO ? using routerLink allows angular to properly navigate without refreshing the page -->
-        <!-- ? so while href can be used, it would be slower and make the page lose it's state -->
-        <li role="presentation" class="active"><a routerLink="/">Home</a></li>
-        <li role="presentation"><a routerLink="/servers">Servers</a></li>
-        <li role="presentation"><a [routerLink]="['/users']">Users</a></li>
+        <!-- TODO ? using routerLinkActiveOptions specifies that the current route needs to be exactly equal -->
+        <!-- ? to be considered active, so relative children routes will not count as active for this directive. -->
+        <li
+          role="presentation"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a routerLink="">Home</a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="servers">Servers</a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a [routerLink]="['users']">Users</a>
+        </li>
       </ul>
     </div>
   </div>
