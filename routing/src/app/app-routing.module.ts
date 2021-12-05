@@ -52,6 +52,8 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
+  // TODO ? to enable hash strategy, uncomment
+  // imports: [RouterModule.forRoot(appRoutes, { useHash: true })],
   imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule],
 })

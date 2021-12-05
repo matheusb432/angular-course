@@ -26,18 +26,7 @@ export class ServerComponent implements OnInit {
     // TODO ? using the resolver service configured in the appRoutes array to get the data
     this.route.data.subscribe((data: Data) => {
       this.server = data['server'];
-
-      console.log(this.server);
     });
-
-    // !
-    // const { id } = this.params;
-
-    // this.initServer(+id);
-
-    // this.route.params.subscribe((p) => {
-    //   this.initServer(+p.id);
-    // });
   }
 
   initServer(id: number) {

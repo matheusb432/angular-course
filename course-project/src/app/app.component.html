@@ -1,10 +1,9 @@
 <!-- <app-header (featureSelected)="onNavigate($event)"></app-header> -->
 <app-header></app-header>
 <div class="container h-screen mx-auto">
-  <!-- <app-recipes *ngIf="loadedFeature === 'recipe'"></app-recipes> -->
-  <app-recipes *ngIf="loadedFeature === features.Recipe"></app-recipes>
-  <!-- *ngIf="loadedFeature === 'shopping-list'" -->
+  <router-outlet></router-outlet>
+  <!-- <app-recipes *ngIf="loadedFeature === features.Recipe"></app-recipes>
   <app-shopping-list
     *ngIf="loadedFeature === features.ShoppingList"
-  ></app-shopping-list>
+  ></app-shopping-list> -->
 </div>

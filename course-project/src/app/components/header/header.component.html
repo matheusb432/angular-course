@@ -39,10 +39,20 @@
     "
   >
     <li class="navbar-item">
-      <a href="#" (click)="onSelect(features.Recipe)">Recipes</a>
+      <a
+        [routerLink]="['/recipes']"
+        routerLinkActive="actv-rt"
+        (click)="onSelect(features.Recipe)"
+        >Recipes</a
+      >
     </li>
     <li class="navbar-item">
-      <a href="#" (click)="onSelect(features.ShoppingList)">Shopping List</a>
+      <a
+        [routerLink]="['/shopping-list']"
+        routerLinkActive="actv-rt"
+        (click)="onSelect(features.ShoppingList)"
+        >Shopping List</a
+      >
     </li>
     <li class="flex-grow"></li>
     <li class="navbar-item relative right-4 dropdown">

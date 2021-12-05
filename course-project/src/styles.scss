@@ -40,6 +40,10 @@ h1 {
   @apply bg-yellow-600 hover:bg-yellow-500;
 }
 
+.actv-rt {
+  @apply font-bold border-pink-500 p-2 rounded bg-pink-300;
+}
+
 .list-item {
   @apply py-2 px-3 border border-pink-700 border-opacity-30 text-left;
 }
