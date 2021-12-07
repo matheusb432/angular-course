@@ -1,7 +1,10 @@
 <div class="py-6">
   <div class="grid grid-cols-12">
     <div class="col-span-full">
-      <button class="btn-pink">New Recipe</button>
+      <button class="btn-pink" (click)="onNewRecipe()">
+        New Recipe
+        <!-- <a [routerLink]="['new']"> New Recipe </a> -->
+      </button>
     </div>
   </div>
 

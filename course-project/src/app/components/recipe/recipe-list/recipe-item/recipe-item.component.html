@@ -1,5 +1,7 @@
-<div class="grid grid-cols-12 mt-4 mx-4" (click)="onRecipeSelect()">
+<div class="grid grid-cols-12 mt-4 mx-4">
   <a
+    [routerLink]="[recipe.id]"
+    routerLinkActive="actv-rt"
     class="
       col-span-full
       border-2 border-pink-500
@@ -11,7 +13,6 @@
       border-opacity-50
       rounded-md
     "
-    href="#"
   >
     <div
       class="col-span-full lg:col-span-6 xl:col-span-4 xl:col-start-1 text-left"

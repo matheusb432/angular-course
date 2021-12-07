@@ -1,9 +1,9 @@
-import { ShoppingService } from './../shopping/shopping.service';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Ingredient } from 'src/app/shared/ingredient.model';
+
+import { ShoppingService } from './../shopping/shopping.service';
 import { Recipe } from './recipe.model';
-import { FeatureService } from 'src/app/shared/feature.service';
-import { Features } from 'src/app/shared/features.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +11,14 @@ import { Features } from 'src/app/shared/features.enum';
 export class RecipeService {
   private _recipes: Recipe[] = [
     new Recipe(
+      1,
       'Beef Recipe',
       'recipe description',
       'https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_960_720.jpg',
       [new Ingredient('beef ing 1', 10), new Ingredient('beef ing 2', 15)]
     ),
     new Recipe(
+      2,
       'Shrimp Recipe',
       'recipe desc',
       'https://upload.wikimedia.org/wikipedia/commons/3/39/Recipe.jpg',
@@ -28,6 +30,7 @@ export class RecipeService {
       ]
     ),
     new Recipe(
+      3,
       'Dish Recipe',
       'recipe ---',
       'https://cdn.pixabay.com/photo/2014/12/21/23/28/recipe-575434_960_720.png',
@@ -43,7 +46,7 @@ export class RecipeService {
 
   constructor(
     private shoppingService: ShoppingService,
-    private featureService: FeatureService
+    private router: Router
   ) {}
 
   get recipes() {
@@ -58,9 +61,16 @@ export class RecipeService {
     this._activeRecipe = recipe;
   }
 
+  setActiveRecipeById(id: number): void {
+    this._activeRecipe = this.recipes.find((r) => r.id === id);
+  }
+
   goToShoppingList(): void {
     this.shoppingService.addIngredients(this.activeRecipe.ingredients);
 
-    this.featureService.onNavigate(Features.ShoppingList);
+    this.router.navigate(['/shopping-list']);
+
+    // TODO ? navigating without routing
+    // this.featureService.onNavigate(Features.ShoppingList);
   }
 }

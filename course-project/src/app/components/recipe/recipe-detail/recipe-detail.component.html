@@ -46,10 +46,13 @@
               >
             </li>
             <li>
-              <a href="#" class="custom-dropdown-item">Edit Recipe</a>
+              <!-- <a class="custom-dropdown-item" (click)="" [routerLink]="['edit']" -->
+              <a class="custom-dropdown-item" (click)="onEditRecipe()"
+                >Edit Recipe</a
+              >
             </li>
             <li>
-              <a href="#" class="custom-dropdown-item">Delete Recipe</a>
+              <a class="custom-dropdown-item">Delete Recipe</a>
             </li>
           </ul>
         </div>
@@ -76,7 +79,5 @@
 </ng-template>
 
 <ng-template #noRecipe>
-  <div class="flex items-center justify-center w-full h-full">
-    <p class="text-3xl font-bold">Select a Recipe!</p>
-  </div>
+  <app-placeholder message="No Recipe Found!"></app-placeholder>
 </ng-template>

@@ -1,3 +1,5 @@
+import { RecipeEditComponent } from './components/recipe/recipe-edit/recipe-edit.component';
+import { PlaceholderComponent } from './components/custom/placeholder/placeholder.component';
 import { ChevronIconComponent } from './components/custom/chevron-icon/chevron-icon.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { ShoppingEditComponent } from './components/shopping/shopping-list/shopping-edit/shopping-edit.component';
@@ -13,6 +15,7 @@ import { RecipeListComponent } from './components/recipe/recipe-list/recipe-list
 import { RecipeDetailComponent } from './components/recipe/recipe-detail/recipe-detail.component';
 import { RecipeItemComponent } from './components/recipe/recipe-list/recipe-item/recipe-item.component';
 import { FormsModule } from '@angular/forms';
+import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-start.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { FormsModule } from '@angular/forms';
     ShoppingEditComponent,
     DropdownDirective,
     ChevronIconComponent,
+    RecipeStartComponent,
+    PlaceholderComponent,
+    RecipeEditComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
