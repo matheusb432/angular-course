@@ -1,0 +1,121 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <!-- TODO * Setting up a template-driven form with a local reference with "ngForm" value -->
+      <form (ngSubmit)="onSubmit()" #formRef="ngForm">
+        <!-- TODO ? setting ngModelGroup with key 'userData' -->
+        <!-- ? ngModelGroup creates another formGroup object inside this formGroup -->
+        <div id="user-data" ngModelGroup="userData" #userDataRef="ngModelGroup">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <!-- TODO ? with the ngModel directive, the name property will be this form control's name in the
+                      ? formGroup `value` object. -->
+            <!-- TODO ? using ngModel with no binding just specifies that this input is a control  -->
+            <input
+              type="text"
+              id="username"
+              class="form-control"
+              ngModel
+              name="username"
+              required
+              #nameInput="ngModel"
+            />
+            <p
+              class="help-block"
+              *ngIf="nameInput.invalid && nameInput.touched"
+            >
+              Enter a valid username!
+            </p>
+          </div>
+          <button
+            class="btn btn-default"
+            type="button"
+            (click)="suggestUserName()"
+          >
+            Suggest an Username
+          </button>
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <!-- TODO ?  the `email` directive validates that this form control should be in email format -->
+            <!-- TODO ?  #localRef="ngModel" creates a local reference with the value that ngModel provides -->
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              ngModel
+              name="email"
+              required
+              email
+              #emailInput="ngModel"
+            />
+            <p
+              class="help-block"
+              *ngIf="emailInput.invalid && emailInput.touched"
+            >
+              Enter a valid email!
+            </p>
+          </div>
+        </div>
+        <p
+          class="help-block"
+          style="color: red; font-weight: bold"
+          *ngIf="userDataRef.invalid && userDataRef.touched"
+        >
+          user data is not valid!
+        </p>
+        <div class="form-group">
+          <label for="secret">Secret Questions</label>
+          <!-- TODO ? one way binding with [ngModel] to give a control a default value -->
+          <select
+            id="secret"
+            class="form-control"
+            [ngModel]="defaultQuestion"
+            name="secret"
+          >
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <!-- TODO ? two way binding to use the value reactively -->
+          <textarea
+            class="form-control"
+            name="questionAnswer"
+            rows="3"
+            [(ngModel)]="answer"
+          ></textarea>
+        </div>
+        <p>Your reply: {{ answer }}</p>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              ngModel
+              [value]="gender"
+              required
+            />
+            {{ gender }}
+          </label>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="formRef.invalid"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="row" *ngIf="submitted">
+    <div class="col-xs-12">
+      <h3>Your data</h3>
+      <p>Username: {{ user.username }}</p>
+      <p>Mail: {{ user.email }}</p>
+      <p>Secret Question: {{ user.secretQuestion }}</p>
+      <p>Question Answer: {{ user.answer }}</p>
+      <p>Gender: {{ user.gender }}</p>
+    </div>
+  </div>
+</div>

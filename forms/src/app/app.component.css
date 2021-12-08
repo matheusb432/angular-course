@@ -1,0 +1,8 @@
+.container {
+  margin-top: 30px;
+}
+
+/* TODO ? possible to style invalid fields like so */
+input.ng-invalid.ng-touched {
+  border-color: red;
+}
