@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { Ingredient } from 'src/app/shared/ingredient.model';
 
 import { ShoppingService } from './../shopping/shopping.service';
@@ -9,6 +10,8 @@ import { Recipe } from './recipe.model';
   providedIn: 'root',
 })
 export class RecipeService {
+  recipeSelected = new Subject<Recipe>();
+
   private _recipes: Recipe[] = [
     new Recipe(
       1,
@@ -59,18 +62,19 @@ export class RecipeService {
 
   setActiveRecipe(recipe: Recipe): void {
     this._activeRecipe = recipe;
+
+    this.recipeSelected.next(this._activeRecipe);
   }
 
   setActiveRecipeById(id: number): void {
     this._activeRecipe = this.recipes.find((r) => r.id === id);
+
+    this.recipeSelected.next(this._activeRecipe);
   }
 
   goToShoppingList(): void {
     this.shoppingService.addIngredients(this.activeRecipe.ingredients);
 
     this.router.navigate(['/shopping-list']);
-
-    // TODO ? navigating without routing
-    // this.featureService.onNavigate(Features.ShoppingList);
   }
 }

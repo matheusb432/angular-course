@@ -1,9 +1,9 @@
-// li {
-//   @apply whitespace-nowrap;
-// }
-
 .navbar-item {
-  @apply whitespace-nowrap transition-all text-lg hover:text-pink-700;
+  @apply whitespace-nowrap transition-all text-lg hover:bg-pink-300;
+
+  a {
+    @apply p-1;
+  }
 }
 
 app-chevron-icon {
