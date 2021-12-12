@@ -1,3 +1,90 @@
-<p>
-  recipe-edit works!
-</p>
+<div class="grid grid-cols-12">
+  <div class="col-span-12">
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+      <div class="grid grid-cols-12">
+        <div class="col-span-12 flex ml-4 space-x-4">
+          <button
+            type="submit"
+            class="btn-green"
+            [disabled]="!recipeForm.valid"
+          >
+            Save
+          </button>
+          <button type="button" class="btn-red" (click)="onCancel()">
+            Cancel
+          </button>
+        </div>
+      </div>
+      <div class="grid grid-cols-12">
+        <div class="col-span-12">
+          <div class="form-input">
+            <label for="name">Name</label>
+            <input type="text" id="name" formControlName="name" />
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-12">
+        <div class="col-span-12">
+          <div class="form-input">
+            <label for="imagePath">Image URL</label>
+            <input type="text" id="imagePath" formControlName="imagePath" />
+          </div>
+        </div>
+        <div *ngIf="imagePath.value && imagePath.valid" class="col-span-12">
+          <img
+            class="w-full mx-auto ml-4 my-4 pr-4"
+            [src]="imagePath.value"
+            alt="Recipe Image"
+          />
+        </div>
+      </div>
+      <div class="grid grid-cols-12">
+        <div class="col-span-full form-input">
+          <label for="description">Description</label>
+          <textarea
+            type="text"
+            id="description"
+            formControlName="description"
+            rows="6"
+          ></textarea>
+        </div>
+      </div>
+      <div [formArrayName]="'ingredients'" class="grid grid-cols-12">
+        <h3 class="font-bold text-xl ml-4 mt-4">Ingredients</h3>
+        <div
+          *ngFor="let ingredientCtrl of ingredientControls; let idx = index"
+          [formGroupName]="idx"
+          class="grid grid-cols-12 col-span-full"
+        >
+          <div class="form-input col-span-8">
+            <input type="text" name="name" id="name" formControlName="name" />
+          </div>
+          <div class="form-input col-span-2">
+            <input
+              type="number"
+              name="amount"
+              id="amount"
+              formControlName="amount"
+            />
+          </div>
+          <div class="form-input">
+            <button
+              type="button"
+              class="btn-red w-9 h-9"
+              (click)="removeIngredient(idx)"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-12">
+        <div class="col-span-12 flex ml-4 mt-4 space-x-4">
+          <button type="button" class="btn" (click)="onAddIngredient()">
+            Add Ingredient
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

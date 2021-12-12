@@ -1,66 +1,98 @@
+import { Subscription } from 'rxjs';
 import { ShoppingService } from '../../shopping.service';
 import {
   Component,
   ElementRef,
   EventEmitter,
   Host,
+  OnDestroy,
   OnInit,
   Output,
   SkipSelf,
   ViewChild,
 } from '@angular/core';
 import { Ingredient } from 'src/app/shared/ingredient.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-shopping-edit',
   templateUrl: './shopping-edit.component.html',
   styleUrls: ['./shopping-edit.component.scss'],
 })
-export class ShoppingEditComponent implements OnInit {
-  @ViewChild('nameInput') nameInput: ElementRef<HTMLInputElement>;
-  @ViewChild('amountInput') amountInput: ElementRef<HTMLInputElement>;
-
+export class ShoppingEditComponent implements OnInit, OnDestroy {
   @Output() ingredientCreated = new EventEmitter<Ingredient>();
+
+  @ViewChild('formRef') form: NgForm;
+
+  editMode = false;
+  editedItemIndex: number;
+  editedItem: Ingredient;
+
+  startedEditingSub: Subscription;
 
   constructor(private service: ShoppingService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.startedEditingSub = this.service.startedEditing.subscribe((index) => {
+      this.editedItemIndex = index;
+      this.editMode = true;
+      this.editedItem = this.service.getIngredient(index);
 
-  get name() {
-    return this.nameInput.nativeElement;
+      this.form.setValue({
+        inputName: this.editedItem.name,
+        inputAmount: this.editedItem.amount,
+      });
+    });
   }
 
-  // set name(value: string) {
-  //   this.nameInput.nativeElement.value = value;
-  // }
-
-  get amount() {
-    return this.amountInput.nativeElement;
+  ngOnDestroy() {
+    this.startedEditingSub?.unsubscribe();
   }
 
-  // set amount(value: string) {
-  //   this.amountInput.nativeElement.value = value;
-  // }
+  onSubmit(form: NgForm) {
+    const value = form.value;
 
-  addIngredient() {
-    if (!this.name || !this.amount) {
-      alert('fill input fields!');
+    const newIngredient = new Ingredient(value.inputName, +value.inputAmount);
+
+    if (this.editMode) {
+      this.service.updateIngredient(newIngredient, this.editedItemIndex);
+    } else {
+      this.service.addIngredient(newIngredient);
+    }
+
+    this.disableEditMode();
+    this.resetForm(form);
+  }
+
+  onDelete(form: NgForm): void {
+    if (this.editedItem == null) {
+      alert('Error on delete!');
 
       return;
     }
 
-    this.service.addIngredient({
-      name: this.name.value,
-      amount: +this.amount.value,
-    });
+    this.service.deleteIngredient(this.editedItem);
+
+    this.disableEditMode();
+
+    this.resetForm(form);
   }
 
-  clearFields() {
-    this.name.value = '';
-    this.amount.value = '';
+  disableEditMode(): void {
+    this.editMode = false;
+    this.editedItemIndex = -1;
+    this.editedItem = null;
   }
 
-  clearIngredients() {
+  onClearFields(form: NgForm) {
+    this.resetForm(form);
+  }
+
+  resetForm(form: NgForm): void {
+    form.reset();
+  }
+
+  onClearIngredients() {
     this.service.setIngredients([]);
   }
 }

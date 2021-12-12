@@ -1,6 +1,7 @@
 <div class="grid grid-cols-12 mt-4 mx-4">
+  <!-- [routerLink]="[recipe.id]" -->
   <a
-    [routerLink]="[recipe.id]"
+    [routerLink]="[index]"
     routerLinkActive="actv-rt"
     class="
       col-span-full
@@ -15,7 +16,12 @@
     "
   >
     <div
-      class="col-span-full lg:col-span-6 xl:col-span-4 xl:col-start-1 text-left"
+      class="
+        col-span-full
+        lg:col-span-8
+        xl:col-span-10 xl:col-start-1
+        text-left
+      "
     >
       <h2 class="text-2xl font-bold">{{ recipe.name }}</h2>
       <p>{{ recipe.description }}</p>

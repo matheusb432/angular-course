@@ -1,28 +1,45 @@
 <div class="grid grid-cols-12">
   <div class="col-span-full">
-    <form (ngSubmit)="addIngredient()">
+    <h3 class="font-bold text-3xl ml-4">
+      {{ editMode ? "Edit Ingredient" : "Create Ingredient" }}
+    </h3>
+  </div>
+  <div class="col-span-full">
+    <form (ngSubmit)="onSubmit(formRef)" #formRef="ngForm">
       <div class="grid grid-cols-12">
         <div class="sm:col-span-5 form-input">
           <label for="inputName">Name</label>
-          <input type="text" id="inputName" #nameInput />
+          <input type="text" id="inputName" name="inputName" ngModel required />
         </div>
         <div class="sm:col-span-2 form-input">
-          <label for="inputNumber">Amount</label>
+          <label for="inputAmount">Amount</label>
+          <!-- TODO ? regex pattern to allow any number > 0 -->
           <input
             type="number"
-            name="inputNumber"
-            id="inputNumber"
-            #amountInput
+            id="inputAmount"
+            name="inputAmount"
+            ngModel
+            required
+            [pattern]="'^[1-9]+[0-9]*$'"
           />
         </div>
       </div>
-      <div class="form-buttons">
-        <button class="btn-pink" type="submit">Add</button>
-        <button class="btn-red" type="button">Delete</button>
-        <button class="btn" type="button" (click)="clearFields()">
-          Clear Form
+      <div class="space-x-3 mt-4 ml-4">
+        <button class="btn-green" type="submit" [disabled]="!formRef.valid">
+          {{ editMode ? "Update" : "Add" }}
         </button>
-        <button class="btn-orange" type="button" (click)="clearIngredients()">
+        <button
+          *ngIf="editMode"
+          class="btn-red"
+          type="button"
+          (click)="onDelete(formRef)"
+        >
+          Delete
+        </button>
+        <button class="btn" type="button" (click)="onClearFields(formRef)">
+          Clear Field
+        </button>
+        <button class="btn-orange" type="button" (click)="onClearIngredients()">
           Clear Ingredients
         </button>
       </div>

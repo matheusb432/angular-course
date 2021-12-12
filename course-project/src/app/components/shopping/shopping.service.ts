@@ -10,7 +10,7 @@ export class ShoppingService {
     new Ingredient('Apples', 5),
     new Ingredient('Pears', 10),
   ];
-  ingredientsChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
 
   constructor() {}
 
@@ -18,16 +18,24 @@ export class ShoppingService {
     return this._ingredients;
   }
 
+  getIngredient(index: number) {
+    return this.ingredients[index];
+  }
+
   addIngredient(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
-
-    this.ingredientsChanged.next(this.ingredients.slice());
   }
 
   addIngredients(ingredients: Ingredient[]) {
     this.ingredients.push(...ingredients);
+  }
 
-    this.ingredientsChanged.next(this.ingredients.slice());
+  updateIngredient(ingredient: Ingredient, index: number) {
+    this.ingredients[index] = ingredient;
+  }
+
+  deleteIngredient(ingredient: Ingredient) {
+    this._ingredients = this.ingredients.filter((i) => i !== ingredient);
   }
 
   setIngredients(ingredients: Ingredient[]) {

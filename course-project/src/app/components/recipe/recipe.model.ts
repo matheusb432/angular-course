@@ -1,9 +1,11 @@
+import { AddMap } from 'mapper-ts/lib-esm';
 import { Ingredient } from './../../shared/ingredient.model';
 export class Recipe {
   id: number;
   name: string;
   description: string;
   imagePath: string;
+  @AddMap(Ingredient)
   ingredients: Ingredient[];
 
   constructor(
@@ -18,5 +20,9 @@ export class Recipe {
     this.description = desc;
     this.imagePath = image;
     this.ingredients = ingredients;
+  }
+
+  static empty() {
+    return new Recipe(0, '', '', '', []);
   }
 }

@@ -14,7 +14,7 @@ import { RecipesComponent } from './components/recipe/recipes/recipes.component'
 import { RecipeListComponent } from './components/recipe/recipe-list/recipe-list.component';
 import { RecipeDetailComponent } from './components/recipe/recipe-detail/recipe-detail.component';
 import { RecipeItemComponent } from './components/recipe/recipe-list/recipe-item/recipe-item.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-start.component';
 
 @NgModule({
@@ -33,7 +33,8 @@ import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-st
     PlaceholderComponent,
     RecipeEditComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+
+  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

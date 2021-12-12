@@ -14,4 +14,6 @@ export class RecipeItemComponent {
   // * before :: recipe-item -> recipe-list -> recipes <-> recipe-detail
   // * after  :: recipe-item <-> RecipeService <-> recipe-detail
   @Input() recipe: Recipe;
+
+  @Input() index: number;
 }

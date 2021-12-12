@@ -10,8 +10,6 @@ import { Recipe } from './recipe.model';
   providedIn: 'root',
 })
 export class RecipeService {
-  recipeSelected = new Subject<Recipe>();
-
   private _recipes: Recipe[] = [
     new Recipe(
       1,
@@ -35,7 +33,7 @@ export class RecipeService {
     new Recipe(
       3,
       'Dish Recipe',
-      'recipe ---',
+      'Long Recipe description hmmm yes this is indeed a recipe',
       'https://cdn.pixabay.com/photo/2014/12/21/23/28/recipe-575434_960_720.png',
       [
         new Ingredient('dish ing 1', 9),
@@ -60,21 +58,33 @@ export class RecipeService {
     return this._activeRecipe;
   }
 
-  setActiveRecipe(recipe: Recipe): void {
-    this._activeRecipe = recipe;
-
-    this.recipeSelected.next(this._activeRecipe);
+  getRecipe(index: number): Recipe {
+    return this.recipes[index];
   }
 
-  setActiveRecipeById(id: number): void {
-    this._activeRecipe = this.recipes.find((r) => r.id === id);
+  addRecipe(recipe: Recipe): void {
+    this._recipes.push(recipe);
+  }
 
-    this.recipeSelected.next(this._activeRecipe);
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this._recipes[index] = newRecipe;
+  }
+
+  setActiveRecipe(recipe: Recipe): void {
+    this._activeRecipe = recipe;
+  }
+
+  setActiveRecipeById(index: number): void {
+    this._activeRecipe = this.recipes[index];
   }
 
   goToShoppingList(): void {
     this.shoppingService.addIngredients(this.activeRecipe.ingredients);
 
     this.router.navigate(['/shopping-list']);
+  }
+
+  deleteRecipe(recipe: Recipe): void {
+    this._recipes = this._recipes.filter((r) => r !== recipe);
   }
 }

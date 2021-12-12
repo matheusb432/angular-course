@@ -1,5 +1,5 @@
 <div class="grid grid-cols-12">
-  <div class="col-span-full md:col-span-10 border-2 border-yellow-700">
+  <div class="col-span-full">
     <app-shopping-edit></app-shopping-edit>
     <hr />
     <ul class="flex flex-col p-2 -space-y-0.5">
@@ -11,7 +11,8 @@
           hover:bg-pink-200
           border-opacity-50
         "
-        *ngFor="let ingredient of ingredients"
+        *ngFor="let ingredient of ingredients; let idx = index"
+        (click)="onEditItem(idx)"
         >{{ ingredient.name }} ({{ ingredient.amount }})</a
       >
     </ul>
