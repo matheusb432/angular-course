@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <input type="text" [(ngModel)]="filteredStatus" />
+      <br />
+      <button class="btn btn-primary" (click)="onAddServer()">
+        Add server
+      </button>
+      <br /><br />
+      <!-- TODO / using async pipe to show the promise's output -->
+      <h2>App Status: {{ appStatus | async }}</h2>
+      <ul class="list-group">
+        <!-- TODO * applying a pipe to a ngFor directive to filter this list -->
+        <li
+          class="list-group-item"
+          *ngFor="let server of servers | filter: filteredStatus:'status'"
+          [ngClass]="getStatusClasses(server)"
+        >
+          <span class="badge">
+            {{ server.status }}
+          </span>
+          <!-- TODO ? passing a parameter to a custom pipe -->
+          <strong>{{ server.name | shorten: 15 }}</strong> |
+          <!-- TODO ? applying uppercase pipe to format this string output -->
+          {{ server.instanceType | uppercase }} |
+          <!-- TODO ? applying chained pipes to format the date output -->
+          {{ server.started | date: 'fullDate' | uppercase }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
