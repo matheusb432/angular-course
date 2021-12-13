@@ -1,3 +1,4 @@
+import { AuthComponent } from './components/auth/auth.component';
 import { RecipeEditComponent } from './components/recipe/recipe-edit/recipe-edit.component';
 import { PlaceholderComponent } from './components/custom/placeholder/placeholder.component';
 import { ChevronIconComponent } from './components/custom/chevron-icon/chevron-icon.component';
@@ -33,6 +34,7 @@ import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-st
     RecipeStartComponent,
     PlaceholderComponent,
     RecipeEditComponent,
+    AuthComponent,
   ],
 
   imports: [

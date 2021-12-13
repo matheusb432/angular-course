@@ -43,18 +43,13 @@
     "
   >
     <li class="navbar-item">
-      <a
-        [routerLink]="['/recipes']"
-        routerLinkActive="actv-rt"
-        (click)="onSelect(features.Recipe)"
-        >Recipes</a
-      >
+      <a [routerLink]="['/recipes']" routerLinkActive="actv-rt">Recipes</a>
     </li>
     <li class="navbar-item">
-      <a
-        [routerLink]="['/shopping-list']"
-        routerLinkActive="actv-rt"
-        (click)="onSelect(features.ShoppingList)"
+      <a [routerLink]="['/auth']" routerLinkActive="actv-rt">Authenticate</a>
+    </li>
+    <li class="navbar-item">
+      <a [routerLink]="['/shopping-list']" routerLinkActive="actv-rt"
         >Shopping List</a
       >
     </li>

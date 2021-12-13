@@ -1,3 +1,4 @@
+import { AuthComponent } from './components/auth/auth.component';
 import { RecipesResolverService } from './components/recipe/recipes-resolver.service';
 import { RecipeEditComponent } from './components/recipe/recipe-edit/recipe-edit.component';
 import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-start.component';
@@ -8,6 +9,7 @@ import { RecipesComponent } from './components/recipe/recipes/recipes.component'
 import { RecipeDetailComponent } from './components/recipe/recipe-detail/recipe-detail.component';
 
 const routes: Routes = [
+  { path: 'auth', component: AuthComponent },
   {
     path: 'recipes',
     component: RecipesComponent,

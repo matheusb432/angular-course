@@ -20,9 +20,9 @@ export class HeaderComponent {
     return this.featureService.features;
   }
 
-  onSelect(feature: Features): void {
-    this.featureService.onNavigate(feature);
-  }
+  // onSelect(feature: Features): void {
+  //   this.featureService.onNavigate(feature);
+  // }
 
   onSaveData(): void {
     this.dataStorageService.storeRecipes();
