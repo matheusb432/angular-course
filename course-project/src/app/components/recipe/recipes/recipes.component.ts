@@ -1,3 +1,4 @@
+import { RecipeService } from './../recipe.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
   // providers: [RecipeService],
 })
 export class RecipesComponent implements OnInit {
-  constructor() {}
+  constructor(private service: RecipeService) {}
 
-  ngOnInit(): void {}
+  async ngOnInit(): Promise<void> {
+    // await this.service.fetchRecipes();
+  }
 }

@@ -66,10 +66,12 @@
         <app-chevron-icon styleClass="-ml-1"></app-chevron-icon>
       </div>
       <ul class="dropdown-menu" #dropdownLinks>
-        <li class="custom-dropdown-item">
+        <li class="custom-dropdown-item cursor-pointer" (click)="onSaveData()">
           <a>Save Data</a>
         </li>
-        <li class="custom-dropdown-item"><a>Fetch Data</a></li>
+        <li class="custom-dropdown-item cursor-pointer" (click)="onFetchData()">
+          <a>Fetch Data</a>
+        </li>
       </ul>
     </li>
   </ul>

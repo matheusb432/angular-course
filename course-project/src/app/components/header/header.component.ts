@@ -1,3 +1,5 @@
+import { RecipeService } from './../recipe/recipe.service';
+import { DataStorageService } from './../../shared/data-storage.service';
 import { Features } from './../../shared/features.enum';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FeatureService } from 'src/app/shared/feature.service';
@@ -8,17 +10,26 @@ import { FeatureService } from 'src/app/shared/feature.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  // @Output() featureSelected = new EventEmitter<string>();
-
-  constructor(private featureService: FeatureService) {}
+  constructor(
+    private featureService: FeatureService,
+    private dataStorageService: DataStorageService,
+    private recipeService: RecipeService
+  ) {}
 
   get features() {
     return this.featureService.features;
   }
 
   onSelect(feature: Features): void {
-    // this.featureService.loadedFeature = feature;
     this.featureService.onNavigate(feature);
-    // this.featureSelected.emit(feature);
+  }
+
+  onSaveData(): void {
+    this.dataStorageService.storeRecipes();
+  }
+
+  onFetchData(): void {
+    // this.dataStorageService.fetchRecipes();
+    this.dataStorageService.fetchRecipes().subscribe(() => {});
   }
 }

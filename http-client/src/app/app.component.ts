@@ -1,74 +1,68 @@
-import { Post } from './post.model';
-import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Mapper } from 'mapper-ts/lib-esm';
-import { Observable } from 'rxjs';
-import { FirebaseData } from './types/firebase-data';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { Post } from './post.model';
+import { PostService } from './post.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
-  loadedPosts = [];
+export class AppComponent implements OnInit, OnDestroy {
+  posts: Post[] = [];
+
+  isFetching = false;
+
+  error = null;
+
+  private errorSub: Subscription;
 
   firebaseUrl =
     'https://ng-guide-course-default-rtdb.firebaseio.com/posts.json';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public service: PostService) {}
 
   ngOnInit() {
-    this.fetchPosts();
+    this.onFetchPosts();
+
+    this.initSubscriptions();
   }
 
-  onCreatePost(postData: { title: string; content: string }) {
-    const request$ = this.http.post(`${this.firebaseUrl}`, postData);
+  ngOnDestroy(): void {
+    this.errorSub?.unsubscribe();
+  }
 
-    request$.subscribe((responseData) => {
-      this.fetchPosts();
+  initSubscriptions() {
+    this.errorSub = this.service.error.subscribe((err) => {
+      this.isFetching = false;
+      this.error = err;
     });
   }
 
-  onFetchPosts() {
-    // Send GET Http request
-    this.fetchPosts();
+  async onCreatePost(postData: Post) {
+    await this.service.createPost(postData);
+
+    this.onFetchPosts();
+  }
+
+  onHandleError() {
+    this.error = null;
+  }
+
+  async onFetchPosts() {
+    this.isFetching = true;
+    this.error = null;
+
+    this.posts = await this.service.fetchPosts();
+
+    this.isFetching = false;
   }
 
   onClearPosts() {
-    // Send DELETE Http request
-  }
-
-  private fetchPosts() {
-    const request$ = this.http.get<FirebaseData<Post>>(this.firebaseUrl);
-
-    const pipedRequest$ = this.pipeFirebaseData(request$, Post);
-
-    pipedRequest$.subscribe((posts) => {
-      this.loadedPosts = posts;
-
-      console.log(this.loadedPosts);
+    this.service.deletePosts().subscribe(() => {
+      this.posts = [];
     });
-  }
-
-  private pipeFirebaseData<T>(
-    request$: Observable<any>,
-    type: new (...args: any[]) => T
-  ): Observable<T[]> {
-    // TODO ? mapping the data from an object of KVPs to an array
-    return request$.pipe(
-      map((responseData: FirebaseData<T>) => {
-        const items: T[] = [];
-
-        Object.keys(responseData).forEach((key) => {
-          const item = new Mapper(type).map({ key, ...responseData[key] });
-
-          items.push(item);
-        });
-
-        return items;
-      })
-    );
   }
 }

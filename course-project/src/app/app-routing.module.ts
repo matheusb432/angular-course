@@ -1,3 +1,4 @@
+import { RecipesResolverService } from './components/recipe/recipes-resolver.service';
 import { RecipeEditComponent } from './components/recipe/recipe-edit/recipe-edit.component';
 import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-start.component';
 import { ShoppingListComponent } from './components/shopping/shopping-list/shopping-list.component';
@@ -13,8 +14,17 @@ const routes: Routes = [
     children: [
       { path: '', component: RecipeStartComponent },
       { path: 'new', component: RecipeEditComponent },
-      { path: ':id', component: RecipeDetailComponent },
-      { path: ':id/edit', component: RecipeEditComponent },
+      // TODO * adding the recipes resolver service to load the recipes when the page loads
+      {
+        path: ':id',
+        component: RecipeDetailComponent,
+        resolve: [RecipesResolverService],
+      },
+      {
+        path: ':id/edit',
+        component: RecipeEditComponent,
+        resolve: [RecipesResolverService],
+      },
     ],
   },
   { path: 'shopping-list', component: ShoppingListComponent },

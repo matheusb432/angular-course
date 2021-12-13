@@ -42,7 +42,7 @@
       |
       <button
         class="btn btn-danger"
-        [disabled]="loadedPosts.length < 1"
+        [disabled]="posts.length < 1"
         (click)="onClearPosts()"
       >
         Clear Posts
@@ -50,15 +50,24 @@
     </div>
   </div>
   <div class="row">
-    <ul class="list-group" *ngIf="loadedPosts?.length > 0; else noPosts">
-      <li class="list-item" *ngFor="let post of loadedPosts">
-        {{ post | json }}
+    <ul class="list-group" *ngIf="posts?.length > 0 && !isFetching">
+      <li class="list-group-item" *ngFor="let post of posts">
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content }}</p>
       </li>
     </ul>
-    <ng-template #noPosts>
+    <ng-template [ngIf]="isFetching && !error">
+      <p>Loading...</p>
+    </ng-template>
+    <ng-template [ngIf]="posts.length < 1 && !isFetching && !error">
       <div class="col-xs-12 col-md-6 col-md-offset-3">
         <p>No posts available!</p>
       </div>
     </ng-template>
+    <div *ngIf="error" class="alert alert-danger">
+      <h1>An Error Ocurred!</h1>
+      <p>{{ error }}</p>
+      <button class="btn btn-danger" (click)="onHandleError()">OK</button>
+    </div>
   </div>
 </div>
