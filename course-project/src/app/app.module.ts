@@ -1,3 +1,4 @@
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { RecipeEditComponent } from './components/recipe/recipe-edit/recipe-edit.component';
 import { PlaceholderComponent } from './components/custom/placeholder/placeholder.component';
@@ -35,6 +36,7 @@ import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-st
     PlaceholderComponent,
     RecipeEditComponent,
     AuthComponent,
+    LoadingSpinnerComponent,
   ],
 
   imports: [

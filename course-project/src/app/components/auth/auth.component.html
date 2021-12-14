@@ -1,5 +1,4 @@
 <div class="grid grid-cols-12">
-  <!-- <div class="col-span-full"> -->
   <div
     class="
       col-span-4 col-start-5
@@ -12,19 +11,39 @@
       rounded-lg
     "
   >
-    <form>
+    <div
+      *ngIf="error"
+      class="bg-red-200 rounded-lg p-4 text-red-800 text-center text-lg ml-4"
+    >
+      {{ error }}
+    </div>
+    <form #formRef="ngForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
       <div class="form-input">
         <label for="email">Email</label>
-        <input id="email" />
+        <input id="email" name="email" ngModel required email />
       </div>
       <div class="form-input">
         <label for="password">Password</label>
-        <input type="password" id="password" />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          minlength="6"
+        />
       </div>
       <div class="ml-4 mt-4 flex space-x-4">
-        <button class="btn">Sign Up</button>
-        <button class="btn">Switch to Login</button>
+        <button type="submit" [disabled]="!formRef.valid" class="btn">
+          {{ getModeText(isLoginMode) }}
+        </button>
+        <button type="button" class="btn-green" (click)="onSwitchMode()">
+          Switch to {{ getModeText(!isLoginMode) }}
+        </button>
       </div>
     </form>
+    <div *ngIf="isLoading" class="text-center">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
   </div>
 </div>
