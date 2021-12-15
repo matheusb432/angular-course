@@ -1,5 +1,6 @@
 import { AddMap } from 'mapper-ts/lib-esm';
-import { Ingredient } from './../../shared/ingredient.model';
+import { Ingredient } from '../shared/ingredient.model';
+
 export class Recipe {
   @AddMap('key')
   id?: string;

@@ -1,12 +1,12 @@
+import { URL_REGEXP } from 'src/app/shared/custom-validators';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { URL_REGEXP } from 'src/app/shared/custom-validators';
 import { Mapper } from 'mapper-ts/lib-esm';
 
 import { Recipe } from '../recipe.model';
-import { Ingredient } from './../../../shared/ingredient.model';
 import { RecipeService } from './../recipe.service';
+import { Ingredient } from '../../shared/ingredient.model';
 
 @Component({
   selector: 'app-recipe-edit',

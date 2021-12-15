@@ -1,12 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { PlaceholderDirective } from './placeholder.directive';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { DropdownBootstrapDirective } from './dropdown-bootstrap.directive';
 import { DropdownDirective } from './dropdown.directive';
-import { AlertModalComponent } from './alert-modal/alert-modal.component';
-import { AlertComponent } from './alert/alert.component';
-import { PlaceholderDirective } from './placeholder.directive';
+import { ChevronIconComponent } from './components/chevron-icon/chevron-icon.component';
+import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
+import { AlertComponent } from './components/alert/alert.component';
+import { CommonModule } from '@angular/common';
+
 import { NgModule } from '@angular/core';
-import { ChevronIconComponent } from '../components/custom/chevron-icon/chevron-icon.component';
 
 // TODO * shared modules import and export features that will get used across various different modules in the app
 @NgModule({

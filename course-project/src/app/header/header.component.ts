@@ -1,8 +1,8 @@
+import { FeatureService } from './../shared/feature.service';
+import { DataStorageService } from './../shared/data-storage.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FeatureService } from 'src/app/shared/feature.service';
 
-import { DataStorageService } from './../../shared/data-storage.service';
 import { AuthService } from './../auth/auth.service';
 
 @Component({

@@ -1,4 +1,4 @@
-import { AuthInterceptorService } from './components/auth/auth-interceptor.service';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { NgModule } from '@angular/core';
 import { provideInterceptor } from './shared/utils';
 

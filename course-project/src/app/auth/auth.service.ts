@@ -1,13 +1,13 @@
+import { FirebaseAuthErrors } from './../shared/types/firebase-auth-errors.enum';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
-import { FirebaseAuthErrors } from 'src/app/shared/types/firebase-auth-errors.enum';
 
-import { environment } from './../../../environments/environment';
 import { AuthResponse } from './auth-response';
 import { Auth } from './auth.model';
 import { User } from './user.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

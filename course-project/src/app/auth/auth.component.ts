@@ -1,5 +1,3 @@
-import { PlaceholderDirective } from './../../shared/placeholder.directive';
-import { AlertComponent } from './../../shared/alert/alert.component';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -10,11 +8,12 @@ import {
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+import { AlertModalComponent } from '../shared/components/alert-modal/alert-modal.component';
+import { PlaceholderDirective } from '../shared/placeholder.directive';
 
 import { AuthResponse } from './auth-response';
 import { Auth } from './auth.model';
 import { AuthService } from './auth.service';
-import { AlertModalComponent } from 'src/app/shared/alert-modal/alert-modal.component';
 
 @Component({
   selector: 'app-auth',

@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
+import { Recipe } from '../recipe/recipe.model';
+import { RecipeService } from '../recipe/recipe.service';
 
 import { environment } from './../../environments/environment';
-import { Recipe } from './../components/recipe/recipe.model';
-import { RecipeService } from './../components/recipe/recipe.service';
 import { ApiService } from './api.service';
 import { FirebaseData } from './types/firebase-data';
 

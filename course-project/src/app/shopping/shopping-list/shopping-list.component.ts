@@ -1,7 +1,7 @@
+import { Component, OnInit, SkipSelf } from '@angular/core';
+
+import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingService } from '../shopping.service';
-import { Ingredient } from './../../../shared/ingredient.model';
-import { Component, Host, OnDestroy, OnInit, SkipSelf } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-list',
