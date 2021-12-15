@@ -1,25 +1,41 @@
+import { Observable, Subscription } from 'rxjs';
+import { FirebaseAuthErrors } from './../../shared/types/firebase-auth-errors.enum';
 import { AuthService } from './auth.service';
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Auth } from './auth.model';
+import { AuthResponse } from './auth-response';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
 })
-export class AuthComponent implements AfterViewInit {
+export class AuthComponent implements OnInit, AfterViewInit {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
 
+  userChangedSub: Subscription;
+
   @ViewChild('formRef') form: NgForm;
 
   constructor(private cdRef: ChangeDetectorRef, private service: AuthService) {}
+
+  ngOnInit(): void {
+    this.userChangedSub = this.service.userChanged.subscribe((user) => {
+      console.log(user);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.userChangedSub?.unsubscribe();
+  }
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
@@ -38,26 +54,28 @@ export class AuthComponent implements AfterViewInit {
 
     const { email, password } = this.form.value as Auth;
 
+    const authData = new Auth(email, password);
+
     this.isLoading = true;
 
-    if (this.isLoginMode) {
-      // ...
-      this.isLoading = false;
-    } else {
-      const request$ = this.service.signup(new Auth(email, password));
+    let auth$: Observable<AuthResponse>;
 
-      request$.subscribe({
-        next: (resData) => {
-          console.log(resData);
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.error = 'An error ocurred!';
-          console.log(err);
-          this.isLoading = false;
-        },
-      });
+    if (this.isLoginMode) {
+      auth$ = this.service.login(authData);
+    } else {
+      auth$ = this.service.signup(authData);
     }
+
+    auth$.subscribe({
+      next: (resData) => {
+        this.isLoading = false;
+      },
+      error: (errMessage) => {
+        this.error = errMessage;
+
+        this.isLoading = false;
+      },
+    });
 
     this.form.reset();
   }
