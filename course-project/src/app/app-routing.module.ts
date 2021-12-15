@@ -7,12 +7,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RecipesComponent } from './components/recipe/recipes/recipes.component';
 import { RecipeDetailComponent } from './components/recipe/recipe-detail/recipe-detail.component';
+import { AuthGuard } from './components/auth/auth.guard';
 
 const routes: Routes = [
   { path: 'auth', component: AuthComponent },
   {
     path: 'recipes',
     component: RecipesComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: RecipeStartComponent },
       { path: 'new', component: RecipeEditComponent },

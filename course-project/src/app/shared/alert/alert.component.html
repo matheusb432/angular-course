@@ -1,0 +1,19 @@
+<div
+  *ngIf="canRender"
+  class="
+    flex
+    justify-between
+    bg-red-200
+    rounded-lg
+    p-4
+    text-red-800 text-center text-lg
+    ml-4
+  "
+>
+  {{ message }}
+  <span
+    class="font-bold hover:opacity-70 cursor-pointer transition-opacity"
+    (click)="closeAlert()"
+    >X</span
+  >
+</div>

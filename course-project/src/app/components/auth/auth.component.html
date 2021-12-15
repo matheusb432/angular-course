@@ -1,3 +1,6 @@
+<!-- TODO ? applying the placeholder directive so the dynamic component renders here when it's instantiated -->
+<ng-template appPlaceholder></ng-template>
+
 <div class="grid grid-cols-12">
   <div
     class="
@@ -11,12 +14,13 @@
       rounded-lg
     "
   >
-    <div
+    <!-- TODO ? dynamic component with ngIf, most of the times it's the best way to do it -->
+    <!-- <app-alert-modal
       *ngIf="error"
-      class="bg-red-200 rounded-lg p-4 text-red-800 text-center text-lg ml-4"
-    >
-      {{ error }}
-    </div>
+      [message]="error"
+      (close)="onHandleError()"
+    ></app-alert-modal> -->
+
     <form #formRef="ngForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
       <div class="form-input">
         <label for="email">Email</label>

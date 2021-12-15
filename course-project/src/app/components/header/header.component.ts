@@ -36,7 +36,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onSaveData(): void {
-    this.dataStorageService.storeRecipes();
+    if (confirm('WARNING! this will overwrite all existing recipes!')) {
+      this.dataStorageService.storeRecipes();
+    }
   }
 
   onFetchData(): void {

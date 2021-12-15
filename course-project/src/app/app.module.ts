@@ -1,3 +1,6 @@
+import { PlaceholderDirective } from './shared/placeholder.directive';
+import { AlertModalComponent } from './shared/alert-modal/alert-modal.component';
+import { AlertComponent } from './shared/alert/alert.component';
 import { AuthInterceptorService } from './components/auth/auth-interceptor.service';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthComponent } from './components/auth/auth.component';
@@ -38,6 +41,9 @@ import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-st
     RecipeEditComponent,
     AuthComponent,
     LoadingSpinnerComponent,
+    AlertComponent,
+    AlertModalComponent,
+    PlaceholderDirective,
   ],
 
   imports: [
