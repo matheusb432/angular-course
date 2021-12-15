@@ -1,67 +1,29 @@
-import { PlaceholderDirective } from './shared/placeholder.directive';
-import { AlertModalComponent } from './shared/alert-modal/alert-modal.component';
-import { AlertComponent } from './shared/alert/alert.component';
-import { AuthInterceptorService } from './components/auth/auth-interceptor.service';
-import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
-import { AuthComponent } from './components/auth/auth.component';
-import { RecipeEditComponent } from './components/recipe/recipe-edit/recipe-edit.component';
-import { PlaceholderComponent } from './components/custom/placeholder/placeholder.component';
-import { ChevronIconComponent } from './components/custom/chevron-icon/chevron-icon.component';
-import { DropdownDirective } from './shared/dropdown.directive';
-import { ShoppingEditComponent } from './components/shopping/shopping-list/shopping-edit/shopping-edit.component';
-import { ShoppingListComponent } from './components/shopping/shopping-list/shopping-list.component';
-import { HeaderComponent } from './components/header/header.component';
-import { NgModule, Provider } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RecipesComponent } from './components/recipe/recipes/recipes.component';
-import { RecipeListComponent } from './components/recipe/recipe-list/recipe-list.component';
-import { RecipeDetailComponent } from './components/recipe/recipe-detail/recipe-detail.component';
-import { RecipeItemComponent } from './components/recipe/recipe-list/recipe-item/recipe-item.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-start.component';
+import { AuthModule } from './components/auth/auth.module';
+import { HeaderComponent } from './components/header/header.component';
+import { RecipesModule } from './components/recipe/recipes.module';
+import { ShoppingModule } from './components/shopping/shopping.module';
+import { CoreModule } from './core.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    RecipesComponent,
-    RecipeListComponent,
-    RecipeDetailComponent,
-    RecipeItemComponent,
-    ShoppingListComponent,
-    ShoppingEditComponent,
-    DropdownDirective,
-    ChevronIconComponent,
-    RecipeStartComponent,
-    PlaceholderComponent,
-    RecipeEditComponent,
-    AuthComponent,
-    LoadingSpinnerComponent,
-    AlertComponent,
-    AlertModalComponent,
-    PlaceholderDirective,
-  ],
-
+  declarations: [AppComponent, HeaderComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
+    RecipesModule,
+    ShoppingModule,
+    AuthModule,
+    SharedModule,
+    CoreModule,
+    // TODO * important to import this last since it has a wildcard ('**') route that redirects any nonexistant routes
+    AppRoutingModule,
   ],
-  providers: [provideInterceptor(AuthInterceptorService)],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
-function provideInterceptor<T>(classType: new (...args: any[]) => T): Provider {
-  return {
-    provide: HTTP_INTERCEPTORS,
-    useClass: classType,
-    multi: true,
-  };
-}
