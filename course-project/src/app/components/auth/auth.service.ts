@@ -1,12 +1,13 @@
-import { Observable, catchError, throwError, Subject, tap } from 'rxjs';
-import { environment } from './../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Auth } from './auth.model';
-import { AuthResponse } from './auth-response';
+import { Router } from '@angular/router';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { FirebaseAuthErrors } from 'src/app/shared/types/firebase-auth-errors.enum';
+
+import { environment } from './../../../environments/environment';
+import { AuthResponse } from './auth-response';
+import { Auth } from './auth.model';
 import { User } from './user.model';
-import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,10 @@ export class AuthService {
 
   loginUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseApiKey}`;
 
-  userChanged = new Subject<User>();
+  // TODO * BehaviorSubject can expose the previous emitted value so the user token can be fetched on demand.
+  userChanged = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   signup(auth: Auth): Observable<AuthResponse> {
     return (
@@ -33,6 +35,12 @@ export class AuthService {
     return this.http
       .post<AuthResponse>(this.loginUrl, auth)
       .pipe(catchError(this.handleAuthError), tap(this.handleAuth.bind(this)));
+  }
+
+  logout(): void {
+    this.userChanged.next(null);
+
+    this.router.navigate(['/auth']);
   }
 
   // TODO * piping the error so the message error in subscribe() is already the correct one

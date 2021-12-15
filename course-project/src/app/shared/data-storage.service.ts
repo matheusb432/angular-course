@@ -1,11 +1,12 @@
-import { environment } from './../../environments/environment';
-import { RecipeService } from './../components/recipe/recipe.service';
-import { Recipe } from './../components/recipe/recipe.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, Observable, tap } from 'rxjs';
+
+import { environment } from './../../environments/environment';
+import { Recipe } from './../components/recipe/recipe.model';
+import { RecipeService } from './../components/recipe/recipe.service';
 import { ApiService } from './api.service';
 import { FirebaseData } from './types/firebase-data';
-import { lastValueFrom, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,17 +25,12 @@ export class DataStorageService {
     request$.subscribe((res) => {});
   }
 
-  fetchRecipes(): Observable<any> {
-    const pipedRequest$ = ApiService.pipeFirebaseData(
-      this.http.get<FirebaseData<Recipe>>(this.recipesUrl),
-      Recipe
-    ).pipe(
+  fetchRecipes(): Observable<Recipe[]> {
+    return this.http.get<FirebaseData<Recipe>>(this.recipesUrl).pipe(
+      map((responseData) => ApiService.mapToArray(responseData, Recipe)),
       tap((recipes) => {
         this.recipeService.setRecipes(recipes);
       })
     );
-
-    return pipedRequest$;
-    // this.recipeService.setRecipes(await lastValueFrom(pipedRequest$));
   }
 }

@@ -1,3 +1,4 @@
+import { AuthInterceptorService } from './components/auth/auth-interceptor.service';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { RecipeEditComponent } from './components/recipe/recipe-edit/recipe-edit.component';
@@ -7,7 +8,7 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { ShoppingEditComponent } from './components/shopping/shopping-list/shopping-edit/shopping-edit.component';
 import { ShoppingListComponent } from './components/shopping/shopping-list/shopping-list.component';
 import { HeaderComponent } from './components/header/header.component';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -46,7 +47,15 @@ import { RecipeStartComponent } from './components/recipe/recipe-start/recipe-st
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [provideInterceptor(AuthInterceptorService)],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+function provideInterceptor<T>(classType: new (...args: any[]) => T): Provider {
+  return {
+    provide: HTTP_INTERCEPTORS,
+    useClass: classType,
+    multi: true,
+  };
+}

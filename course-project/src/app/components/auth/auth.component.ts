@@ -1,41 +1,33 @@
-import { Observable, Subscription } from 'rxjs';
-import { FirebaseAuthErrors } from './../../shared/types/firebase-auth-errors.enum';
-import { AuthService } from './auth.service';
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Auth } from './auth.model';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+
 import { AuthResponse } from './auth-response';
+import { Auth } from './auth.model';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
 })
-export class AuthComponent implements OnInit, AfterViewInit {
+export class AuthComponent implements AfterViewInit {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
 
-  userChangedSub: Subscription;
-
   @ViewChild('formRef') form: NgForm;
 
-  constructor(private cdRef: ChangeDetectorRef, private service: AuthService) {}
-
-  ngOnInit(): void {
-    this.userChangedSub = this.service.userChanged.subscribe((user) => {
-      console.log(user);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.userChangedSub?.unsubscribe();
-  }
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    private service: AuthService,
+    private router: Router
+  ) {}
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
@@ -69,6 +61,8 @@ export class AuthComponent implements OnInit, AfterViewInit {
     auth$.subscribe({
       next: (resData) => {
         this.isLoading = false;
+
+        this.router.navigate(['/recipes']);
       },
       error: (errMessage) => {
         this.error = errMessage;
