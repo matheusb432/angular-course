@@ -1,5 +1,15 @@
 # CourseProject
 
+## To run this with the firebase backend:
+
+1. Create a firebase project
+2. Add a realtime database in testing mode
+3. Add email/password authentication option
+4. Get the Firebase REST API URL and key in your project information
+5. Add the api url and key in the environment.ts files of this project.
+
+## Angular Default README
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.2.
 
 ## Development server

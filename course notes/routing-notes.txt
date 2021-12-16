@@ -1,0 +1,66 @@
+--	Routing
+
+	--	Routes
+		--	To add dynamic paths and nested routes:
+
+			 >>  {
+			 >>    path: 'users',
+			 >>    component: UsersComponent,
+			 >>    children: [
+			 >>      { path: ':id/:name', component: UsersComponent },
+			 >>    ],
+			 >>  }
+
+		 --	To set a generic redirection route to a not found page:
+
+  			>>	{ path: '**', redirectTo: 'not-found' },
+
+  			-- * : should be the last route in the declared routes array
+
+  		--	To set a specific redirection route to another page:
+
+  			>>	{ path: '', redirectTo: '/somewhere-else', pathMatch: 'full' }
+
+  		--	To pass data to a component in routes
+
+  			>>	  { path: 'not-found', component: ErrorPageComponent, data: {message: 'Page not found!'} },
+
+
+	--	Router & ActivatedRoute
+		--	To programatically add queryParams to a Router.navigate() call: 
+
+			>>	this.router.navigate(['/servers', id, 'edit'], {
+	      	>>	  queryParams: { allowEdit: '1' },
+	      	>>	  fragment: 'loading',
+	    	>>	});
+
+	    	== Result -> */servers/1/edit?allowEdit=1#loading
+
+    	--	To get query params from current route:
+
+    		>>	this.route.snapshot.queryParams
+
+    		--	Also possible to subscribe to the query parameters observable so you can react to any changes to it
+
+    		>>	this.route.queryParams.subscribe();
+
+    	--	To preserve query parameters when navigating with router
+
+		    >>	this.router.navigate(['edit'], {
+		    >>	  relativeTo: this.route,
+		    >>	  queryParamsHandling: 'preserve',
+		    >>	});
+
+	--	routerLink Directive
+		--	Using routerLink allows angular to properly navigate without refreshing the page, so while href can be used, it would be slower and make the page lose it's state.
+
+		--	[queryParams]="{ allowEdit: '1' }" to add `?allowEdit=1` to route
+
+		--	[fragment]="'loading'" to add #loading to route
+
+		--	Without the '/', the path gets appended to the URL, so here it would look for '/servers/servers' : 
+			>> <a routerLink="servers">servers wrong link</a>
+
+		--	The routerLinkActive="{css-class}" directive allows angular to add or remove a CSS class to an element if the specified link route is the current active one.
+
+		--	[routerLinkActiveOptions]="{exact: true}" specifies that a router needs to be exactly the same (meaning, not as a relative path), to be considered active

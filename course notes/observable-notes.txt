@@ -1,0 +1,30 @@
+--	Observables
+	--	Observables are constructs to which you subscribe to be informed about changes in data, they're a stream or data that can notify their subscribers whenever a new data is emitted.
+
+	--	[RxJS definition]: A representation of any set of values over any amount of time.
+
+	--	There are two kinds of Observables - finite value and infinite value.
+
+		--	http Observables produce finite (1) values and something like a DOM event listener Observable produces infinite values.
+
+		--	If you manually call subscribe (not using async pipe), then unsubscribe from infinite Observables.
+
+		--	Finite observables will be automatically unsubscribed from by RxJS
+
+	--	RxJS operators essentially allow you to build a chain of steps to handle observable data
+
+	--	Subject
+		--	Subjects can be used as more efficient event emitters, should always be used for cross-component communications
+
+		--	Subject.next() == EventEmitter.emit(), Both emit an event.
+
+		--	In general should be used for emitters that need subscriptions, if a subscribe() isn't needed, just use EventEmitter.
+
+		--	Angular's EventEmitter extends RxJS' Subject; the implementation differences are not relevant,thus both could be used interchangeably.
+
+	--	RxJS pipe() operators
+		--	catchError() can pipe an error so that the message error in subscribe() is already the correct one
+
+		--	tap() runs code with the observable return (on the subscription) before it gets to the actual subscription
+
+		--	take(n) only gets `n` values from an infinite observable, to limit the amount of times it's listened to

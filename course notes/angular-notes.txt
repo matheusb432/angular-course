@@ -1,0 +1,202 @@
+-- Setup
+	--	New Project
+		>>	ng new {project-name}
+		>>	--no-strict to disable TS strict mode
+
+	--	(optional) Tailwind Configuration
+		>>	npm i -D tailwindcss
+		>>	npx tailwindcss init
+		->	in styles.css
+			>>	@import "tailwindcss/base";
+			>>	@import "tailwindcss/components";
+			>>	@import "tailwindcss/utilities"; 
+
+--	General
+	--	The Angular ecosystem has many components that helps developers but many of them are not used at all or misused by developers. The most common bad usage practices concerns mainly Directives and Pipes.
+
+	--	ES6 Arrow Functions [() => {}] assure that 'this' refers to the parent's scope, while using function() {} creates a new 'this' context.
+
+	--	Angular enforces style encapsulation by using attribute selectors to apply specific class styles to tags in a component's specific css file
+
+	--	ng-content hook (tag) to project any content inside a component call in itself dynamically
+
+	--	JiT vs AoT Compilations
+		--	Just-in-Time (JiT) compilation is where the angular template compiler runs, at runtime, in the browser, it's a bit slower since it needs to compile code when the browser loads
+
+		--	Ahead-of-Time (AoT) compilation is where the angular template compiler runs at buildtime, before the app is deployed, which will lead to slightly faster load speeds in the browser
+
+
+--	Modules
+
+	--	Modules are ways of bundling angular building blocks together, such as components, directives, pipes and services into one module of a certain feature
+
+	--	An Angular app requires at least one module (AppModule), but it may be split into multiple modules
+
+	--	Core Angular features are included in Angular modules (e.g. FormsModule) to load them lazily
+
+	--	Every module works independently of one another, so if a module declares a component, it can't be declared in any other module
+
+	--	Multiple declarations of the same component are not allowed, so using shared modules for common components is necessary
+
+	--	Services should never be provided in eagerly-loaded modules, since the effect will be the exact same as providing it in the AppModule so it can be confusing
+
+	--	Module Patterns
+
+		--	Feature modules are modules that bundle building blocks of a feature (e.g. RecipesModule, ShoppingModule)
+
+		--	Shared modules are modules that bundle shared features that get used across the app, such as Modals, Toasts, Alerts, etc.
+
+		--	Core module exists to bundle core provisions (of the providers array) of the app that would otherwise be in the AppModule, not necessary but a useful pattern regardless
+
+
+--	Dynamic Components (https://angular.io/guide/dynamic-component-loader)
+
+	--	Allows for programmatically inserting components in a specific place in the DOM, usually defined by a ng-template with an anchor directive that injects a ViewContainerRef in it's constructor.	
+
+--	Authentication
+
+	--	RESTful/GraphQL APIs are stateless, so sessions can't be used for authentication in SPAs
+
+	--	JSON Web Tokens are used for authentication in SPAs, which have an encoded string that can only be validated by the server.
+
+	--	Authentication should always be validated on the server, not the browser.
+
+		--	To have a safe authentication system, it must depend on server-side logic, if it is configured client-side only it will expose unsafe JS code that the user can manipulate to get access to the app where they otherwise shouldn't.
+
+	--	Typical Authentication Flow
+		1.	User sends credentials (e.g. email & password) to the server
+
+		2.	If valid, server returns an encoded JSON Web Token
+
+		3.	Token gets stored client-side (browser)
+
+		4.	Any subsequent requests that need authentication that the user makes will contain the token on the request header 
+
+		5.	Server always revalidates the token through (usually) middlewares, if valid they allow access to the user, if invalid they return a 401 status code response 
+
+		6.	401 response informs the frontend that the user needs to reauthenticate 
+
+		7.	Goes back to step 1
+
+--	Http Client
+	--	Requests are only sent when the request observable has been subscribed
+
+	--	Instead of configuring the HttpHeaders of every request when you want to add authentication to requests, the correct approach is to use interceptors.
+
+	--	Http interceptors exist to run code right before a request is made
+
+	--	e.g.	
+		>>	// Nothing happens here
+		>>	const request$ = this.http.post(`${this.firebaseUrl}/posts.json`, postData);
+
+		>>	// After the subscription, the api call is made
+		>>	request$.subscribe((responseData) => {});
+
+--	Pipes
+	--	The main purpose of a pipe is to transform output
+
+	--	e.g.
+		-- DatePipe
+			>>	new Date() | date: "dd/M/yyyy"  -> 12/12/2021
+
+--	Forms
+	--	FormGroup.reset() resets the value and state of the entire form, useful after submitting a form to clean everything up
+
+	--	In Angular, a form is just a group of controls
+
+	--	Template-Driven Forms
+		--	Template == HTML part of the component in this context
+
+		--	Template driven forms use NgModel and NgForm to define formControls and a formGroup, respectively
+
+		--	To access a NgForm instance in the TS of a component, use @ViewChild('formLocalReference') formName: NgForm; and then access it after the AfterViewInit lifecycle hook has been triggered
+
+		--	ngModelGroup can be used to create formGroups within a form to build nested forms 
+
+--	Lifecycle Hooks
+	>>	ngOnChanges
+		--	Called after a bound input property changes
+
+	>>	ngOnInit
+		--	Called once the component is initialized
+
+	>>	ngDoCheck
+		--	Called during every change detection run
+		--	Runs when change is being checked, not only when change happens
+
+	>>	ngAfterContentInit
+		--	Called after content (ng-content) has been projected into view
+
+	>>	ngAfterContentChecked
+		--	Called every time the projected content has been checked
+
+	>>	ngAfterViewInit
+		--	Called after the component's view (and child views) has been initialized
+		--	Useful when you need to wait for a local reference's element to be rendered before acessing it's value, or just a DOM element's property too.
+
+	>>	ngAfterViewChecked
+		--	Called every time the view (and child views) have been checked
+
+	>>	ngOnDestroy
+		--	Called once the component is about to be destroyed
+
+--	Components
+	--	A component is supposed to handle user interaction and display data without
+		caring about the API request itself, calling an external API in a component's
+		code also reduces the reusability of the code.
+
+	--	Selectors
+		--	Element selector -> 'app-server'
+			>>	<app-servers></app-servers>
+
+		--	Attribute selector -> '[app-server]'
+			>>	<div app-servers></div>
+
+		--	Class selector -> '.app-server'
+			>>	<div class="app-servers"></div>
+
+	--	In general a component constructor should only contain initializations.
+
+--	Directives (https://angular.io/guide/built-in-directives)
+	--	Classes that extends HTML elements with new functionalities and apply custom code to them.
+
+
+	--	Structural Directives
+		--	Can control what is added or removed from the DOM.
+
+		--	e.g
+			>>	*ngIf
+			>>	*ngFor
+
+	--	Attribute Directives
+		--	Attribute directives don't add or remove elements, they only change the
+			element they were placed on.
+
+		--	@HostListener('event-name') method(); allows Angular to declare a DOM event to listen to on an element that has a directive bound to it, allowing you to run code whenever the given event occurs on the bound element. 
+
+		--	@HostBinding('object.property') prop; allows Angular to bind to a property of a DOM element.
+
+
+		--	e.g
+			>>	[ngStyle]
+			>>	[ngClass]
+
+--	Pipes
+	--	Are defined to be functions that transforms an input to a required format and they are directly applied on the template.
+
+--	Databinding
+	--	By default, all component properties are only acessible inside of these components, only being bindable with a @Input() or @Output() decorator.
+
+	--	Two-way binding -> [(ngModel)]
+
+	--	Local References
+		--	Value that holds a reference to it's HTML element
+
+		--	syntax: <tag #{localReferenceId} /> 
+
+		--	By default, can only be accessed in the template (HTML) of a component
+
+		--	Can be visible in the TS of a component by using @ViewChild()
+
+		--	e.g
+			<input type="text" #serverName="ngModel" />

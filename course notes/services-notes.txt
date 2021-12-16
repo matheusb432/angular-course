@@ -1,0 +1,34 @@
+--	Services
+	--	Hierarchical Dependency Injection (https://angular.io/guide/hierarchical-dependency-injection)
+		==	AppModule 
+			-- Services injected in the AppModule are, by default, singletons, meaning the same instance of the service will be available application wide
+
+		==	AppComponent
+			--	Services injected in the AppComponent will be available for all components (but not for other Services)
+
+		==	Any Other Component
+			--	Same instance of the service is available for the Component and all it's child components
+
+	--	The only way to inject other services in a service is to first provide it in the AppModule, that way it also creates a application-wide instance that will use the same service instance for the whole app unless it gets explicitly overwritten in the providers array of another component.
+
+	--	By using the same singleton instance for an angular service of a parent component in it's child components, state management of said components will become simpler and it becomes more intuitive to control the data by the services, instead of creating one instance of an object and coupling it in all components with excessive databinding.
+
+	--	Dependency Injection (https://angular.io/guide/dependency-injection)
+		--	Using the @Injectable() providedIn property is preferable to the @NgModule() providers array because with @Injectable() providedIn, optimization tools can perform tree-shaking, which removes services that your application isn't using and results in smaller bundle sizes.
+
+		--	{ providedIn: 'root' } enables the service to be loaded lazily, so it's only instantied when needed instead of at startup, the alternative is to include the service in the AppModule providers array.
+
+			>>	@Injectable({
+			>>    providedIn: 'root', // <--provides this service in the root ModuleInjector
+			>>  }) 
+
+		--	Passing a module in the providedIn property allows a restriction of the scope of the service, so it's only loaded when said module is loaded.	
+			>>	@Injectable({
+			>>	  // we declare that this service should be created
+			>>	  // by any injector that includes HeroModule.
+			>>	  providedIn: HeroModule,
+			>>	})
+
+		--	A component's ElementInjector (providers array in the @Component decorator) has precedence over any other context for a service's resolution, meaning when Angular tries to resolve a given service, it always looks first for the ElementInjector resolution, and only if it can't resolve it goes for the ModuleInjector resolution.
+
+		--	Instance management is key when using angular services, as to always use the desired instance in a component and not lead to unpredictable results.
