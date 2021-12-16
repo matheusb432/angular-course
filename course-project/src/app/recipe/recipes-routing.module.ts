@@ -9,7 +9,9 @@ import { RecipesComponent } from './recipes/recipes.component';
 
 const routes: Routes = [
   {
-    path: 'recipes',
+    // TODO ? lazy loaded module can have the default path as empty, since the path is defined in app-routing
+    path: '',
+    // path: 'recipes',
     component: RecipesComponent,
     canActivate: [AuthGuard],
     children: [

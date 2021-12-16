@@ -1,3 +1,4 @@
+import { LoggingService } from './../logging.service';
 import { PlaceholderDirective } from './placeholder.directive';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { DropdownBootstrapDirective } from './dropdown-bootstrap.directive';
