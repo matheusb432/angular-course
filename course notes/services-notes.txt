@@ -1,4 +1,7 @@
---	Services
+==	Services
+	==	Best practices
+		--	It's ideal to separate a feature's api requests and state management logic into two separate services
+
 	--	Hierarchical Dependency Injection (https://angular.io/guide/hierarchical-dependency-injection)
 		==	AppModule 
 			-- Services injected in the AppModule are, by default, singletons, meaning the same instance of the service will be available application wide
@@ -32,3 +35,21 @@
 		--	A component's ElementInjector (providers array in the @Component decorator) has precedence over any other context for a service's resolution, meaning when Angular tries to resolve a given service, it always looks first for the ElementInjector resolution, and only if it can't resolve it goes for the ModuleInjector resolution.
 
 		--	Instance management is key when using angular services, as to always use the desired instance in a component and not lead to unpredictable results.
+
+	==	Using Dependency Injection to inject a service via an interface
+		>>
+			export interface StoreService {
+			  remove(key: StoreKeys): void;
+			  store<T>(data: StoreData<T>): void;
+			  get<T>(): StoreData<T>;
+			}
+
+			export const STORE_SERVICE = new InjectionToken<StoreService>('StoreService');
+
+			// The service that will be injected
+			@Injectable()
+			export class LocalStorageService implements StoreService
+
+			// In AppModule.providers
+			{ provide: STORE_SERVICE, useClass: LocalStorageService },
+		>>

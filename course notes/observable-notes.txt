@@ -1,9 +1,9 @@
---	Observables
+==	Observables & RxJS
 	--	Observables are constructs to which you subscribe to be informed about changes in data, they're a stream or data that can notify their subscribers whenever a new data is emitted.
 
 	--	[RxJS definition]: A representation of any set of values over any amount of time.
 
-	--	There are two kinds of Observables - finite value and infinite value.
+	==	There are two kinds of Observables - finite value and infinite value.
 
 		--	http Observables produce finite (1) values and something like a DOM event listener Observable produces infinite values.
 
@@ -13,8 +13,12 @@
 
 	--	RxJS operators essentially allow you to build a chain of steps to handle observable data
 
-	--	Subject
+	--	Don't set component observables via getters, they will run on every detection cycle, which can cause performance issues
+
+	==	Subject
 		--	Subjects can be used as more efficient event emitters, should always be used for cross-component communications
+
+		--	A Subject is essentially an event bus, but with the RxJS operators features
 
 		--	Subject.next() == EventEmitter.emit(), Both emit an event.
 
@@ -22,9 +26,25 @@
 
 		--	Angular's EventEmitter extends RxJS' Subject; the implementation differences are not relevant,thus both could be used interchangeably.
 
-	--	RxJS pipe() operators
+	==	RxJS pipe() operators
+		==	RxJS pipe operators will run in the order in which they are declared
+
 		--	catchError() can pipe an error so that the message error in subscribe() is already the correct one
 
 		--	tap() runs code with the observable return (on the subscription) before it gets to the actual subscription
 
 		--	take(n) only gets `n` values from an infinite observable, to limit the amount of times it's listened to
+
+		==	exhaustMap
+			--	exhaustMap is an operator that will ignore any subsequent source values until the current inner observable completes.
+
+			--	If an observable is called multiple times before an execution of it finishes, it ignores will ignore those executions until it finishes
+
+			--	Example; an observable is tied to a click event that calls the API and an user clicks it multiple times before it finishes, only one API request will be sent.
+
+		==	shareReplay
+			--	caches the subscription emitted values and replays it to any subsequent subscribers
+
+			--	shares the same subscription across multiple subscribers, even if the observable has already been completed
+
+			--	shareReplay(1) caches and replays only the most recent value, shareReplay(2) replays the last 2 values and so on

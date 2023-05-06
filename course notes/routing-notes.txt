@@ -1,6 +1,6 @@
---	Routing
+==	Routing
 
-	--	Routes
+	==	Routes
 		--	To add dynamic paths and nested routes:
 
 			 >>  {
@@ -25,8 +25,32 @@
 
   			>>	  { path: 'not-found', component: ErrorPageComponent, data: {message: 'Page not found!'} },
 
+  			--	NOTE: This does not work when used in a root module, if a route is declared in another module
 
-	--	Router & ActivatedRoute
+  		==	Component Input Binding
+  			::	https://netbasal.com/binding-router-information-to-routed-component-inputs-in-angular-78ee92f63e64
+
+  			--	In Angular 16, it's now possible to get route data via component Inputs
+
+  			==	Activating
+  				AppComponent.providers = [
+  					... ,
+  					withComponentInputBinding()
+  				]
+
+  			==	e.g
+
+  				>>
+  					// url/user/1?search=filter-value
+
+  					@Component(...)
+  					export class UserComponent {
+  						@Input() userId: string; // 1
+  						@Input() search: string; // filter-value
+  					}
+  				>>
+
+	==	Router & ActivatedRoute
 		--	To programatically add queryParams to a Router.navigate() call: 
 
 			>>	this.router.navigate(['/servers', id, 'edit'], {
@@ -51,7 +75,7 @@
 		    >>	  queryParamsHandling: 'preserve',
 		    >>	});
 
-	--	routerLink Directive
+	==	routerLink Directive
 		--	Using routerLink allows angular to properly navigate without refreshing the page, so while href can be used, it would be slower and make the page lose it's state.
 
 		--	[queryParams]="{ allowEdit: '1' }" to add `?allowEdit=1` to route

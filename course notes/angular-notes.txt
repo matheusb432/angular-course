@@ -1,9 +1,17 @@
--- Setup
-	--	New Project
+== Setups
+	==	Angular CLI
+		::	https://angular.io/cli
+		>>	npm install -g @angular/cli
+
+	==	New Project
 		>>	ng new {project-name}
 		>>	--no-strict to disable TS strict mode
 
-	--	(optional) Tailwind Configuration
+	==	ESLint
+		>>	ng add @angular-eslint/schematics
+		>>	npm run lint
+
+	==	Tailwind
 		>>	npm i -D tailwindcss
 		>>	npx tailwindcss init
 		->	in styles.css
@@ -11,7 +19,7 @@
 			>>	@import "tailwindcss/components";
 			>>	@import "tailwindcss/utilities"; 
 
---	General
+==	General
 	--	The Angular ecosystem has many components that helps developers but many of them are not used at all or misused by developers. The most common bad usage practices concerns mainly Directives and Pipes.
 
 	--	ES6 Arrow Functions [() => {}] assure that 'this' refers to the parent's scope, while using function() {} creates a new 'this' context.
@@ -20,13 +28,101 @@
 
 	--	ng-content hook (tag) to project any content inside a component call in itself dynamically
 
-	--	JiT vs AoT Compilations
+	==	JiT vs AoT Compilations
 		--	Just-in-Time (JiT) compilation is where the angular template compiler runs, at runtime, in the browser, it's a bit slower since it needs to compile code when the browser loads
 
 		--	Ahead-of-Time (AoT) compilation is where the angular template compiler runs at buildtime, before the app is deployed, which will lead to slightly faster load speeds in the browser
 
+	--	Passing methods as inputs to child components (with `return () => this.method()`) can be bad to performance since the method creation will run on every change detection cycle.
 
---	Modules
+	--	The two most popular ways to manage angular state is with observable data services or NgRx
+
+==	Observable data services
+	--	An observable data service is an Angular injectable service, usually as a singleton, that uses BehaviorSubjects to provide data to multiple parts of the application
+	--	It decouples the view from the business logic, and makes it so smart components do not have any stateful values
+	--	Subjects shouldn’t be exposed directly in the services, instead only it’s observable (with .asObservable()), 
+	--	This is to prevent the service clients from themselves emitting store values directly instead of calling action methods and therefore bypassing the store.
+
+
+==	NgRx (Angular Redux)
+
+	--	NgRx provides a streamlined, highly structured state management solution.
+
+	--	NgRx is a library built on top of RxJS that implements the Redux pattern on Angular, it can be added to an angular project with 'ng add'
+
+	--	The issue with angular's built-in state management with services and RxJs is that no specific pattern about how to manage state is enforced, so on bigger teams building bigger apps is common for multiple patterns to be implemented, which can lead to complex state management and a code that is difficult to maintain
+
+	--	Even though NgRx requires a lot more code to be written, it’s a lot easier to test since code is broken down into smaller, decoupled pure functions
+
+	--	NgRx state can be inspected via the Redux DevTools
+
+	--	NgRx also provides @ngrx/router-store, which enables listening for changes in the router state in the store
+
+	--	The createFeature function reduces repetitive code in selector files by generating a feature selector and child selectors for each feature state property.
+
+	==	Redux Pattern
+
+		==	Store
+			--	One central store to manage the application state
+
+		==	Actions
+			--	Actions are dispatched with payloads to the store to update the state
+
+		==	Reducer
+			--	Reducer gets the actions and run code to update state in an immutable way
+
+			--	The reducer will then return a new, updated, state (an edited copy of the old state) and will then send the new state to the Store to overwrite the old state 
+
+		==	Effect
+			--	An Effect allows you to watch a given action type and react to that action every time it's been dispatched
+
+			--	Any side effects or asynchronous code should be an effect, not a reducer action
+
+		--	Services and components receive state from the store, so the single source of truth in the application will be the store
+
+	==	Effects
+		--	Effects are an RxJS powered side effect model for Store. Effects use streams to provide new sources of actions to reduce state based on external interactions such as network requests, web socket messages and time-based events.
+
+		--	Effects are implemented as observable streams that listen to one or more actions (using the ofType() operator) dispatched to the store, perform some side effect, and then dispatch a new action to update the state of the application.
+
+		--	Effects isolate side effects from components, allowing for more pure components that select state and dispatch actions.
+
+		--	With effects, component becomes easier to test and less responsible for the data it needs.
+
+		--	It’s also possible to create effects from other observable sources, such as the document.click event
+
+	==	Actions
+		--	Actions express unique events that happen throughout your application. From user interaction with the page, external interaction through network requests, etc
+
+		--	An action’s only responsibilities are to express unique events and intents.
+
+	==	Reducers
+		--	Reducers are synchronous pure functions
+
+		--	When an action is dispatched, all registered reducers receive the action. Whether they handle the action is determined by the “on” functions that associate one or more actions with a given state change.
+
+		--	You can also write reducers using switch statements, which was the previously defined way before reducer creators were introduced in NgRx.
+
+	==	Entity Adapter (@ngrx/entity)
+		--	NgRx provides an entity framework via an entity adapter, which can be created via the createEntityAdapter function. It reduces boilerplate for creating reducers that manage a collection of models and provides performant CRUD operations for managing entity collections.
+
+		--	The adapter object provides multiple action methods, such as add, remove, update, upsert (update or insert), map and and others for a given entity
+
+		--	Each method will return the newly modified state if it was changed, and the same state if it wasn’t 
+
+		--	The updateOne() and updateMany() accepts an interface with the entity id and it’s changes, which is a Partial<T> of it’s type as to only update the necessary props.
+
+		--	The adapter also provides selectors for a state collection’s ids, entities, total entities via the .getSelectors()
+
+		--	The primary key for the entity is declaratively defined as it’s “id” prop, but can be explicitly defined with “selectId”
+
+		--	Entity adapter also allows the definition of a “sortComparer”, a compare function that sorts the entities whenever there’s changes to it
+
+		--	ES6 Class instances will be transformed to plain JS objects when entities are managed in a collection, to guarantee they won’t mutate themselves and for the state to always be serializable, which is a core principle of Redux
+
+
+
+==	Modules
 
 	--	Modules are ways of bundling angular building blocks together, such as components, directives, pipes and services into one module of a certain feature
 
@@ -48,12 +144,11 @@
 
 		--	Core module exists to bundle core provisions (of the providers array) of the app that would otherwise be in the AppModule, not necessary but a useful pattern regardless
 
-
---	Dynamic Components (https://angular.io/guide/dynamic-component-loader)
+==	Dynamic Components (https://angular.io/guide/dynamic-component-loader)
 
 	--	Allows for programmatically inserting components in a specific place in the DOM, usually defined by a ng-template with an anchor directive that injects a ViewContainerRef in it's constructor.	
 
---	Authentication
+==	Authentication
 
 	--	RESTful/GraphQL APIs are stateless, so sessions can't be used for authentication in SPAs
 
@@ -78,7 +173,7 @@
 
 		7.	Goes back to step 1
 
---	Http Client
+==	Http Client
 	--	Requests are only sent when the request observable has been subscribed
 
 	--	Instead of configuring the HttpHeaders of every request when you want to add authentication to requests, the correct approach is to use interceptors.
@@ -92,14 +187,41 @@
 		>>	// After the subscription, the api call is made
 		>>	request$.subscribe((responseData) => {});
 
---	Pipes
+==	Pipes
 	--	The main purpose of a pipe is to transform output
 
-	--	e.g.
+	--	Are defined to be functions that transforms an input to a required format and they are directly applied on the template
+
+	--	A pure pipe must use a pure function, which is one that processes inputs and returns values without side effects. In other words, given the same input, a pure function should always return the same output.
+
+	==	e.g.
 		-- DatePipe
 			>>	new Date() | date: "dd/M/yyyy"  -> 12/12/2021
 
---	Forms
+	==	AsyncPipe
+		::	https://angular.io/api/common/AsyncPipe
+
+		--	An impure pipe that unwraps a value from an asychronous primitive, automatically unsubscribes from the observable once the component is destroyed
+
+		==	e.g.
+		
+			>>
+				<div *ngIf="typeOptions$ | async as typeOptions">
+	  				. . .
+				</div>
+			>>
+
+			>>
+			    <app-select
+			      fcName="profileTypeId"
+			      [control]="profileTypeId"
+			      [fg]="form"
+			      labelText="Type"
+			      [options]="typeOptions$ | async"
+			    ></app-select>
+			>>
+
+==	Forms
 	--	FormGroup.reset() resets the value and state of the entire form, useful after submitting a form to clean everything up
 
 	--	In Angular, a form is just a group of controls
@@ -113,12 +235,215 @@
 
 		--	ngModelGroup can be used to create formGroups within a form to build nested forms 
 
---	Lifecycle Hooks
+==	Observables & RxJS
+	--	Observables are constructs to which you subscribe to be informed about changes in data, they're a stream or data that can notify their subscribers whenever a new data is emitted.
+
+	--	[RxJS definition]: A representation of any set of values over any amount of time.
+
+	==	There are two kinds of Observables - finite value and infinite value.
+
+		--	http Observables produce finite (1) values and something like a DOM event listener Observable produces infinite values.
+
+		--	If you manually call subscribe (not using async pipe), then unsubscribe from infinite Observables.
+
+		--	Finite observables will be automatically unsubscribed from by RxJS
+
+	--	RxJS operators essentially allow you to build a chain of steps to handle observable data
+
+	--	Don't set component observables via getters, they will run on every detection cycle, which can cause performance issues
+
+	==	Subject
+		--	Subjects can be used as more efficient event emitters, should always be used for cross-component communications
+
+		--	A Subject is essentially an event bus, but with the RxJS operators features
+
+		--	Subject.next() == EventEmitter.emit(), Both emit an event.
+
+		--	In general should be used for emitters that need subscriptions, if a subscribe() isn't needed, just use EventEmitter.
+
+		--	Angular's EventEmitter extends RxJS' Subject; the implementation differences are not relevant,thus both could be used interchangeably.
+
+	==	RxJS pipe() operators
+		==	RxJS pipe operators will run in the order in which they are declared
+
+		--	catchError() can pipe an error so that the message error in subscribe() is already the correct one
+
+		--	tap() runs code with the observable return (on the subscription) before it gets to the actual subscription
+
+		--	take(n) only gets `n` values from an infinite observable, to limit the amount of times it's listened to
+
+		==	exhaustMap
+			--	exhaustMap is an operator that will ignore any subsequent source values until the current inner observable completes.
+
+			--	If an observable is called multiple times before an execution of it finishes, it ignores will ignore those executions until it finishes
+
+			--	Example; an observable is tied to a click event that calls the API and an user clicks it multiple times before it finishes, only one API request will be sent.
+
+		==	shareReplay
+			--	caches the subscription emitted values and replays it to any subsequent subscribers
+
+			--	shares the same subscription across multiple subscribers, even if the observable has already been completed
+
+			--	shareReplay(1) caches and replays only the most recent value, shareReplay(2) replays the last 2 values and so on
+
+
+==	Services
+	==	Best practices
+		--	It's ideal to separate a feature's api requests and state management logic into two separate services
+
+	--	Hierarchical Dependency Injection (https://angular.io/guide/hierarchical-dependency-injection)
+		==	AppModule 
+			-- Services injected in the AppModule are, by default, singletons, meaning the same instance of the service will be available application wide
+
+		==	AppComponent
+			--	Services injected in the AppComponent will be available for all components (but not for other Services)
+
+		==	Any Other Component
+			--	Same instance of the service is available for the Component and all it's child components
+
+	--	The only way to inject other services in a service is to first provide it in the AppModule, that way it also creates a application-wide instance that will use the same service instance for the whole app unless it gets explicitly overwritten in the providers array of another component.
+
+	--	By using the same singleton instance for an angular service of a parent component in it's child components, state management of said components will become simpler and it becomes more intuitive to control the data by the services, instead of creating one instance of an object and coupling it in all components with excessive databinding.
+
+	--	Dependency Injection (https://angular.io/guide/dependency-injection)
+		--	Using the @Injectable() providedIn property is preferable to the @NgModule() providers array because with @Injectable() providedIn, optimization tools can perform tree-shaking, which removes services that your application isn't using and results in smaller bundle sizes.
+
+		--	{ providedIn: 'root' } enables the service to be loaded lazily, so it's only instantied when needed instead of at startup, the alternative is to include the service in the AppModule providers array.
+
+			>>	@Injectable({
+			>>    providedIn: 'root', // <--provides this service in the root ModuleInjector
+			>>  }) 
+
+		--	Passing a module in the providedIn property allows a restriction of the scope of the service, so it's only loaded when said module is loaded.	
+			>>	@Injectable({
+			>>	  // we declare that this service should be created
+			>>	  // by any injector that includes HeroModule.
+			>>	  providedIn: HeroModule,
+			>>	})
+
+		--	A component's ElementInjector (providers array in the @Component decorator) has precedence over any other context for a service's resolution, meaning when Angular tries to resolve a given service, it always looks first for the ElementInjector resolution, and only if it can't resolve it goes for the ModuleInjector resolution.
+
+		--	Instance management is key when using angular services, as to always use the desired instance in a component and not lead to unpredictable results.
+
+	==	Using Dependency Injection to inject a service via an interface
+		>>
+			export interface StoreService {
+			  remove(key: StoreKeys): void;
+			  store<T>(data: StoreData<T>): void;
+			  get<T>(): StoreData<T>;
+			}
+
+			export const STORE_SERVICE = new InjectionToken<StoreService>('StoreService');
+
+			// The service that will be injected
+			@Injectable()
+			export class LocalStorageService implements StoreService
+
+			// In AppModule.providers
+			{ provide: STORE_SERVICE, useClass: LocalStorageService },
+		>>
+
+
+==	Routing
+
+	==	Routes
+		--	To add dynamic paths and nested routes:
+
+			 >>  {
+			 >>    path: 'users',
+			 >>    component: UsersComponent,
+			 >>    children: [
+			 >>      { path: ':id/:name', component: UsersComponent },
+			 >>    ],
+			 >>  }
+
+		 --	To set a generic redirection route to a not found page:
+
+  			>>	{ path: '**', redirectTo: 'not-found' },
+
+  			-- * : should be the last route in the declared routes array
+
+  		--	To set a specific redirection route to another page:
+
+  			>>	{ path: '', redirectTo: '/somewhere-else', pathMatch: 'full' }
+
+  		--	To pass data to a component in routes
+
+  			>>	  { path: 'not-found', component: ErrorPageComponent, data: {message: 'Page not found!'} },
+
+  			--	NOTE: This does not work when used in a root module, if a route is declared in another module
+
+  		==	Component Input Binding
+  			::	https://netbasal.com/binding-router-information-to-routed-component-inputs-in-angular-78ee92f63e64
+
+  			--	In Angular 16, it's now possible to get route data via component Inputs
+
+  			==	Activating
+  				AppComponent.providers = [
+  					... ,
+  					withComponentInputBinding()
+  				]
+
+  			==	e.g
+
+  				>>
+  					// url/user/1?search=filter-value
+
+  					@Component(...)
+  					export class UserComponent {
+  						@Input() userId: string; // 1
+  						@Input() search: string; // filter-value
+  					}
+  				>>
+
+	==	Router & ActivatedRoute
+		--	To programatically add queryParams to a Router.navigate() call: 
+
+			>>	this.router.navigate(['/servers', id, 'edit'], {
+	      	>>	  queryParams: { allowEdit: '1' },
+	      	>>	  fragment: 'loading',
+	    	>>	});
+
+	    	== Result -> */servers/1/edit?allowEdit=1#loading
+
+    	--	To get query params from current route:
+
+    		>>	this.route.snapshot.queryParams
+
+    		--	Also possible to subscribe to the query parameters observable so you can react to any changes to it
+
+    		>>	this.route.queryParams.subscribe();
+
+    	--	To preserve query parameters when navigating with router
+
+		    >>	this.router.navigate(['edit'], {
+		    >>	  relativeTo: this.route,
+		    >>	  queryParamsHandling: 'preserve',
+		    >>	});
+
+	==	routerLink Directive
+		--	Using routerLink allows angular to properly navigate without refreshing the page, so while href can be used, it would be slower and make the page lose it's state.
+
+		--	[queryParams]="{ allowEdit: '1' }" to add `?allowEdit=1` to route
+
+		--	[fragment]="'loading'" to add #loading to route
+
+		--	Without the '/', the path gets appended to the URL, so here it would look for '/servers/servers' : 
+			>> <a routerLink="servers">servers wrong link</a>
+
+		--	The routerLinkActive="{css-class}" directive allows angular to add or remove a CSS class to an element if the specified link route is the current active one.
+
+		--	[routerLinkActiveOptions]="{exact: true}" specifies that a router needs to be exactly the same (meaning, not as a relative path), to be considered active
+
+
+==	Lifecycle Hooks
 	>>	ngOnChanges
 		--	Called after a bound input property changes
 
 	>>	ngOnInit
 		--	Called once the component is initialized
+
+		--	Should be used to initialize properties that depend on other component properties, but is not necessary when that's not the case, so initializing the props in the constructor would be fine for these cases
 
 	>>	ngDoCheck
 		--	Called during every change detection run
@@ -140,12 +465,11 @@
 	>>	ngOnDestroy
 		--	Called once the component is about to be destroyed
 
---	Components
-	--	A component is supposed to handle user interaction and display data without
-		caring about the API request itself, calling an external API in a component's
-		code also reduces the reusability of the code.
 
-	--	Selectors
+==	Components
+	--	A component is supposed to handle user interaction and display data without caring about the API request itself, calling an external API in a component's code also reduces the reusability of the code.
+
+	==	Selectors
 		--	Element selector -> 'app-server'
 			>>	<app-servers></app-servers>
 
@@ -157,18 +481,24 @@
 
 	--	In general a component constructor should only contain initializations.
 
---	Directives (https://angular.io/guide/built-in-directives)
+	==	Style Encapsulation
+		--	By using the .component.* file name, any angular styles are encapsulated to the component in which they are used.
+
+		--	An exception to this rule would be the deprecated `::ng-deep`, where it disables this and applies global styles instead
+
+
+==	Directives (https://angular.io/guide/built-in-directives)
 	--	Classes that extends HTML elements with new functionalities and apply custom code to them.
 
 
-	--	Structural Directives
+	==	Structural Directives
 		--	Can control what is added or removed from the DOM.
 
-		--	e.g
+		==	e.g
 			>>	*ngIf
 			>>	*ngFor
 
-	--	Attribute Directives
+	==	Attribute Directives
 		--	Attribute directives don't add or remove elements, they only change the
 			element they were placed on.
 
@@ -176,15 +506,14 @@
 
 		--	@HostBinding('object.property') prop; allows Angular to bind to a property of a DOM element.
 
+		--	ngSrc image directive applies optimizations to image tags
 
 		--	e.g
 			>>	[ngStyle]
 			>>	[ngClass]
 
---	Pipes
-	--	Are defined to be functions that transforms an input to a required format and they are directly applied on the template.
 
---	Databinding
+==	Databinding
 	--	By default, all component properties are only acessible inside of these components, only being bindable with a @Input() or @Output() decorator.
 
 	--	Two-way binding -> [(ngModel)]
@@ -200,3 +529,67 @@
 
 		--	e.g
 			<input type="text" #serverName="ngModel" />
+
+
+==	Optimizations
+	--	Angular triggers it's change detection cycle twice in development mode, similar to React's restricted mode
+
+	--	To check how many times an angular component is being rendered, call a method inside it's template:
+		>>
+			// In template
+			div>{{checkRender()}}</div>
+
+			// In script
+			  checkRender(): boolean {
+			    console.log('checkRender');
+			    return true;
+			  }
+		>>
+
+	==	Pipes instead of template functions
+		--	Functions should never be called inside Angular components unless it's to react to a DOM event or emit an event from another component
+
+		--	The alternative would be to use pipes, so the result is may be cached and it runs only once.
+
+    ==	ChangeDetectionStrategy.OnPush for app reactivity
+    	:: https://www.youtube.com/watch?v=-tB-QDrPmuI
+
+    	--	By default, angular checks for changes on the component and every nested child component when any event happens (e.g. a button click), which can cause performance issues
+
+    	--	Angular's change detection cycle is synchronous, meaning it can block the browser's event loop and cause stutters in the app
+
+    	--	To fix this, add in @Component(): 
+    		>>	changeDetection: ChangeDetectionStrategy.OnPush
+
+    	--	When using OnPush CDS, it's important to use immutability for angular to detect changes, like so:
+    		>>
+    			//	INCORRECT
+    			this.todos[0].text = 'Foo';
+
+    			//	CORRECT
+    			this.todos[0] = { ...this.todos[0], text: 'Foo' }
+    		>>
+
+    	--	Using data streams works seamlessly with OnPush strategy 
+
+    	--	If a component still re-renders too often even with OnPush, and it's parent components are not causing this render, check ngOnChanges(changes: SimpleChanges) to see which property is changing too often
+
+    	--	It's important to note that CSS animations cause components to have render cycles, so they should be accounted for when optimizing
+ 
+    	==	Optimizing an angular component renders step-by-step
+    		1.	Add checkRender() to it's template and see how often it logs changes
+    		2.	Add CDS OnPush and adjust the code, with immutability, accordingly so no bugs are introduced
+    		3.	If the renders still persist, check it's parent components
+    		4.	Repeat steps 1-2 until correcting the change detections for a component doesn't break the checkRender() chain, meaning the previous parent component should be the cause
+
+    == Track by to associate unique key to list items
+      >>  *ngFor="let ... ;trackBy: trackingFn"
+
+==	Troubleshooting
+	==	ExpressionChangedAfterItHasBeenCheckedError
+		--	A warning that angular triggers whenever a value has been changed on it's second detection cycle, that only runs in development
+
+		--	Means that the app may have a bug that will only show up in production, so it's cause must be investigated
+
+		==	Solutions
+			--	Call ChangeDetectorRef.detectChanges() where the changes should have been detected.
